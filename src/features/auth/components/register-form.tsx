@@ -52,7 +52,7 @@ export function RegisterForm() {
   };
 
   return (
-    <Card className="mx-auto w-full max-w-md">
+    <Card className="mx-auto w-full max-w-md bg-white/30">
       <div className="mb-6 space-y-2 text-center">
         <h1 className="text-2xl font-bold text-gray-900">Register</h1>
         <p className="text-sm text-gray-500">

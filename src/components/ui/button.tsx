@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, ReactNode } from "react";
 
-type ButtonVariant = "primary" | "secondary" | "danger" | "outline";
+type ButtonVariant = "primary" | "secondary" | "danger" | "outline" ;
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     children: ReactNode;
@@ -18,13 +18,13 @@ export function Button ({
     ...props
 }: ButtonProps){
 
-    const baseClasses = "inline-flex items-center justify-center rounded-md font-medium transition-colors duration-200 px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed";
+    const baseClasses = "inline-flex items-center justify-center rounded-md transition-colors duration-200 px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed";
 
     const variantClasses = {
-        primary: "bg-blue-600 text-white hover:bg-blue-700",
-        secondary: "bg-gray-600 text-white hover:bg-gray-700",
-        danger: "bg-red-600 text-white hover:bg-red-700",   
-        outline: "border border-gray-300 text-gray-700 hover:bg-gray-100"
+        primary: "bg-[#F25019] text-white hover:bg-[#A9360D] font-extrabold",
+        secondary: "bg-gray-600 text-white hover:bg-gray-700 font-semibold",
+        danger: "bg-red-600 text-white hover:bg-red-700 font-semibold",   
+        outline: "border border-[#F25019] text-[#F25019] hover:bg-[#F25019] hover:text-white font-semibold"
     }
 
     return (
