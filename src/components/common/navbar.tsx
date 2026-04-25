@@ -1,8 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { Menu, X } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/features/auth/hooks/use-auth";
@@ -10,73 +12,198 @@ import { useAuth } from "@/features/auth/hooks/use-auth";
 export function Navbar() {
   const router = useRouter();
   const { user, isAuthenticated, logout } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
-    router.push("/login");
+    setIsMenuOpen(false);
+    router.replace("/login");
   };
 
+  const handleNavigate = (path: string) => {
+    setIsMenuOpen(false);
+    router.push(path);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  const publicLinks = [
+    { label: "Home", href: "/" },
+    { label: "Careers", href: "/" },
+    { label: "Blog", href: "/" },
+    { label: "About Us", href: "/" },
+  ];
+
+  const authLinks = [
+    { label: "Users", href: "/users" },
+    { label: "Dashboard", href: "/dashboard" },
+  ];
+
   return (
-    <header className=" bg-[#c8cdf8]">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-
-
-<Image
-            src="/images/logo.png"
-            alt="Eduka Logo"
-            width={700}
-            height={200}
-            priority
-            className="relative z-10 h-10 w-40 object-contain "
-          />
-        <div className="flex items-center gap-4 text-sm font-medium">
-          <Link href="/" className="text-gray-700 hover:text-blue-600">
-            Home
-          </Link>
-          <Link href="/" className="text-gray-700 hover:text-blue-600">
-            Careers
-          </Link>
-          <Link href="/" className="text-gray-700 hover:text-blue-600">
-            Blog
-          </Link>
-          <Link href="/" className="text-gray-700 hover:text-blue-600">
-            About Us
+    <header className="sticky top-0 z-50 bg-[#c8cdf8]">
+      <nav className="mx-auto max-w-6xl px-4 py-4">
+        <div className="flex items-center justify-between">
+          <Link href="/" onClick={closeMenu}>
+            <Image
+              src="/images/logo.png"
+              alt="Eduka Logo"
+              width={700}
+              height={200}
+              priority
+              className="h-10 w-32 object-contain sm:w-40"
+            />
           </Link>
 
-          {isAuthenticated ? (
-            <>
-              <Link href="/users" className="text-gray-700 hover:text-blue-600">
-                Users
-              </Link>
-
+          {/* Desktop Menu */}
+          <div className="hidden items-center gap-4 text-sm font-medium lg:flex">
+            {publicLinks.map((item) => (
               <Link
-                href="/dashboard"
-                className="text-gray-700 hover:text-blue-600"
+                key={item.label}
+                href={item.href}
+                className="text-gray-700 transition-colors duration-200 hover:text-blue-600"
               >
-                Dashboard
+                {item.label}
               </Link>
+            ))}
 
-              <span className="hidden text-gray-500 sm:inline">
-                {user?.name}
-              </span>
+            {isAuthenticated ? (
+              <>
+                {authLinks.map((item) => (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="text-gray-700 transition-colors duration-200 hover:text-blue-600"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
 
-              <Button type="button" variant="outline" onClick={handleLogout}>
-                Logout
-              </Button>
-            </>
-          ) : (
-            <>
+                <span className="max-w-[160px] truncate text-gray-500">
+                  {user?.name}
+                </span>
 
-            <Button onClick={() => router.push("/login")} >
-              Login
-            </Button>
-              
-            <Button variant="outline" onClick={() => router.push("/register")} >
-              Register
-            </Button>
-              
-            </>
-          )}
+                <Button type="button" variant="outline" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button type="button" onClick={() => handleNavigate("/login")}>
+                  Login
+                </Button>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => handleNavigate("/register")}
+                >
+                  Register
+                </Button>
+              </>
+            )}
+          </div>
+
+          {/* Mobile Toggle */}
+          <button
+            type="button"
+            className="inline-flex rounded-md p-2 text-gray-700 transition-all duration-200 hover:bg-white/40 active:scale-95 lg:hidden"
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            aria-label="Toggle navigation menu"
+            aria-expanded={isMenuOpen}
+          >
+            <span
+              className={`transition-transform duration-300 ease-in-out ${
+                isMenuOpen ? "rotate-180" : "rotate-0"
+              }`}
+            >
+              {isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </span>
+          </button>
+        </div>
+
+        {/* Mobile Menu - jangan pakai conditional render agar animasi close tetap berjalan */}
+        <div
+          className={`grid transition-all duration-300 ease-in-out lg:hidden ${
+            isMenuOpen
+              ? "grid-rows-[1fr] opacity-100"
+              : "grid-rows-[0fr] opacity-0"
+          }`}
+        >
+          <div className="overflow-hidden">
+            <div
+              className={`mt-4 rounded-2xl bg-white/75 p-4 shadow-lg backdrop-blur-md transition-all duration-300 ease-in-out ${
+                isMenuOpen
+                  ? "translate-y-0 scale-100"
+                  : "-translate-y-3 scale-95"
+              }`}
+            >
+              <div className="flex flex-col gap-3 text-sm font-medium">
+                {publicLinks.map((item) => (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    onClick={closeMenu}
+                    className="rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-white hover:text-blue-600"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+
+                {isAuthenticated ? (
+                  <>
+                    {authLinks.map((item) => (
+                      <Link
+                        key={item.label}
+                        href={item.href}
+                        onClick={closeMenu}
+                        className="rounded-md px-3 py-2 text-gray-700 transition-colors duration-200 hover:bg-white hover:text-blue-600"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+
+                    <div className="rounded-md px-3 py-2 text-sm text-gray-500">
+                      {user?.name}
+                    </div>
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <div className="grid gap-3 pt-2 sm:grid-cols-2">
+                    <Button
+                      type="button"
+                      className="w-full"
+                      onClick={() => handleNavigate("/login")}
+                    >
+                      Login
+                    </Button>
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => handleNavigate("/register")}
+                    >
+                      Register
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </nav>
     </header>
