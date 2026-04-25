@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { API_BASE_URL, STORAGE_KEY } from "./constans";
+import { API_BASE_URL, STORAGE_KEYS } from "./constans";
 import { storage } from "./storage";
 
 export const api = axios.create({
@@ -12,7 +12,7 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = storage.getItem(STORAGE_KEY.TOKEN);
+  const token = storage.getItem(STORAGE_KEYS.TOKEN);
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
