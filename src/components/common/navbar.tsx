@@ -14,20 +14,17 @@ export function Navbar() {
           </Link>
 
           <Link href="/users" className="text-gray-700 hover:text-blue-600">
-            Users
+            Courses
           </Link>
 
           <Link href="/dashboard" className="text-gray-700 hover:text-blue-600">
-            Dashboard
+            Blog
           </Link>
 
           <Link href="/login" className="text-gray-700 hover:text-blue-600">
-            Login
+            About
           </Link>
-
-          <Link href="/register" className="text-gray-700 hover:text-blue-600">
-            Register
-          </Link>
+          
         </div>
       </nav>
     </header>
