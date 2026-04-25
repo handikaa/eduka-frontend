@@ -103,7 +103,19 @@ export function RegisterForm() {
           {...register("password_confirmation")}
         />
 
-        <input type="hidden" {...register("role")} />
+        {/* <input type="hidden" {...register("role")} /> */}
+
+          <select
+    id="role"
+    className={`w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${
+      errors.role ? "border-red-500 focus:border-red-500 focus:ring-red-100" : ""
+    }`}
+    {...register("role")}
+  >
+    <option value="student">Student</option>
+    <option value="instructor">Instructor</option>
+    <option value="admin">Admin</option>
+  </select>Í
 
         <Button type="submit" className="w-full" isLoading={isLoading}>
           Register
