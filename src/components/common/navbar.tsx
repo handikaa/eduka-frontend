@@ -31,7 +31,7 @@ export function Navbar() {
 
   const publicLinks = [
     { label: "Home", href: "/" },
-    { label: "Careers", href: "/" },
+    { label: "Courses", href: "/courses" },
     { label: "Blog", href: "/" },
     { label: "About Us", href: "/" },
   ];
@@ -42,7 +42,7 @@ export function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-[#c8cdf8]">
+    <header className="sticky top-0 z-50 bg-white/90">
       <nav className="mx-auto max-w-6xl px-4 py-4">
         <div className="flex items-center justify-between">
           <Link href="/" onClick={closeMenu}>
@@ -62,7 +62,7 @@ export function Navbar() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="text-gray-700 transition-colors duration-200 hover:text-blue-600"
+                className="text-gray-700 transition-colors duration-200 hover:text-blue-600 font-semibold"
               >
                 {item.label}
               </Link>
@@ -80,7 +80,7 @@ export function Navbar() {
                   </Link>
                 ))}
 
-                <span className="max-w-[160px] truncate text-gray-500">
+                <span className="max-w-40 truncate text-gray-500">
                   {user?.name}
                 </span>
 

@@ -63,7 +63,7 @@ export default function DashboardPage() {
               <div className="space-y-2 text-sm text-gray-700">
                 <p className="flex flex-col gap-1 sm:flex-row sm:gap-2">
                   <span className="font-medium text-gray-900">Nama:</span>
-                  <span className="break-words">{user?.name}</span>
+                  <span className="wrap-break-word">{user?.name}</span>
                 </p>
 
                 <p className="flex flex-col gap-1 sm:flex-row sm:gap-2">
