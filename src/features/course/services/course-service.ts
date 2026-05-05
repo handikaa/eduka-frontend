@@ -1,10 +1,6 @@
 import { AxiosError } from "axios";
+
 import { api } from "@/lib/api";
-import {
-  createDummyCourseListResponse,
-  dummyCourseCategoryResponse,
-  dummyCourses,
-} from "@/features/course/constants/course-dummy-data";
 import {
   CourseCategoryResponse,
   CourseDetailResponse,
@@ -25,6 +21,10 @@ function getCourseErrorMessage(error: unknown): string {
     if (responseData?.message) {
       return responseData.message;
     }
+
+    if (error.response?.status) {
+      return `Request gagal dengan status ${error.response.status}`;
+    }
   }
 
   if (error instanceof Error) {
@@ -34,160 +34,73 @@ function getCourseErrorMessage(error: unknown): string {
   return "Terjadi kesalahan saat mengambil data course.";
 }
 
-function simulateDelay(ms = 400): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
-
-
-
 export const courseService = {
   getCourses: async ({
     category_id = null,
     level = "all",
     search = "",
-    status = "all",
+    status = "published",
     page = 1,
-    per_page = 6,
+    per_page = 5,
   }: GetCoursesParams): Promise<CourseListResponse> => {
     try {
-      /**
-       * Simulasi request API.
-       *
-       * Nanti saat API sudah siap, ganti block dummy ini menjadi:
-       *
-       * const response = await api.get<CourseListResponse>("/courses", {
-       *   params: {
-       *     category_id,
-       *     level: level === "all" ? undefined : level,
-       *     search,
-       *     status: status === "all" ? undefined : status,
-       *     page,
-       *     per_page,
-       *   },
-       * });
-       *
-       * return response.data;
-       */
-
-      console.log("Simulated GET /courses params:", {
-        category_id,
-        level,
-        search,
-        status,
-        page,
-        per_page,
+      const response = await api.get<CourseListResponse>("/courses", {
+        params: {
+          category_id: category_id ?? "",
+          level: level === "all" ? "" : level,
+          search,
+          page,
+          per_page,
+          status: status === "all" ? "" : status,
+        },
       });
 
-      await simulateDelay();
-
-      const normalizedSearch = search.trim().toLowerCase();
-
-      const filteredCourses = dummyCourses.filter((course) => {
-        const matchCategory =
-          !category_id ||
-          course.categories.some((category) => category.id === category_id);
-
-        const matchLevel = level === "all" || course.level === level;
-
-        const matchStatus = status === "all" || course.status === status;
-
-        const matchSearch =
-          normalizedSearch.length === 0 ||
-          course.title.toLowerCase().includes(normalizedSearch) ||
-          course.description.toLowerCase().includes(normalizedSearch) ||
-          course.categories.some((category) =>
-            category.name.toLowerCase().includes(normalizedSearch)
-          );
-
-        return matchCategory && matchLevel && matchStatus && matchSearch;
-      });
-
-      return createDummyCourseListResponse(filteredCourses, page, per_page);
+      return response.data;
     } catch (error) {
       throw new Error(getCourseErrorMessage(error));
     }
   },
 
   getRecommendedCourses: async ({
-  recommended,
-  page = 1,
-  per_page = 10,
-}: GetRecommendedCoursesParams): Promise<CourseListResponse> => {
-  try {
-    /**
-     * Simulasi request API recommended course.
-     *
-     * Nanti saat API sudah siap, ganti menjadi:
-     *
-     * const response = await api.get<CourseListResponse>("/courses", {
-     *   params: {
-     *     recomended,
-     *     page,
-     *     per_page,
-     *   },
-     * });
-     *
-     * return response.data;
-     */
+    // recommended,
+    page = 1,
+    per_page = 10,
+  }: GetRecommendedCoursesParams): Promise<CourseListResponse> => {
+    try {
+      const response = await api.get<CourseListResponse>("/courses", {
+        params: {
+          // recommended,
+          page,
+          per_page,
+          status: "published",
+        },
+      });
 
-    console.log("Simulated GET /courses recommended params:", {
-      recommended,
-      page,
-      per_page,
-    });
-
-    await simulateDelay();
-
-    const recommendedCourses = dummyCourses.slice(0, per_page);
-
-    return createDummyCourseListResponse(
-      recommendedCourses,
-      page,
-      per_page
-    );
-  } catch (error) {
-    throw new Error(getCourseErrorMessage(error));
-  }
-},
+      return response.data;
+    } catch (error) {
+      throw new Error(getCourseErrorMessage(error));
+    }
+  },
 
   getCategories: async (): Promise<CourseCategoryResponse> => {
     try {
-      /**
-       * Simulasi request API.
-       *
-       * Nanti saat API sudah siap, ganti menjadi:
-       *
-       * const response = await api.get<CourseCategoryResponse>("/categories");
-       * return response.data;
-       */
+      const response = await api.get<CourseCategoryResponse>("/categories");
 
-      console.log("Simulated GET /categories");
-
-      await simulateDelay();
-
-      return dummyCourseCategoryResponse;
+      return response.data;
     } catch (error) {
       throw new Error(getCourseErrorMessage(error));
     }
   },
 
   getCourseDetailBySlug: async (slug: string): Promise<CourseDetailResponse> => {
-  try {
-    const response = await api.get<CourseDetailResponse>(
-      `/courses/slug/${slug}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    try {
+      const response = await api.get<CourseDetailResponse>(
+        `/courses/slug/${slug}`
+      );
 
-    return response.data;
-  } catch (error) {
-    throw new Error(getCourseErrorMessage(error));
-  }
-},
+      return response.data;
+    } catch (error) {
+      throw new Error(getCourseErrorMessage(error));
+    }
+  },
 };

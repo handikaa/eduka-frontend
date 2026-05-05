@@ -31,7 +31,7 @@ const initialFilters: CourseFilterState = {
   category_id: null,
   level: "all",
   search: "",
-  status: "all",
+  status: "published",
   page: 1,
   per_page: 6,
 };

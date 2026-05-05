@@ -113,7 +113,7 @@ export function FeaturedCourseSection() {
                         lessons={course.lessons.length}
                         description={course.description}
                         thumbnailUrl={thumbnailUrl}
-                        href={`/course/${course.slug}`}
+                        href={`/courses/${course.slug}`}
                       />
                     </div>
                   );
