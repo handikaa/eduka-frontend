@@ -26,13 +26,14 @@ export function CourseCard({
   return (
     <article className="group overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
       <div className="relative h-52 overflow-hidden">
-        <Image
-          src={thumbnailUrl}
-          alt={title}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
+      <Image
+  src={thumbnailUrl}
+  alt={title}
+  fill
+  unoptimized
+  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+  className="object-cover transition-transform duration-500 group-hover:scale-105"
+/>
 
         <div className="absolute inset-0 bg-linear-to-t from-black/50 via-black/10 to-transparent" />
 

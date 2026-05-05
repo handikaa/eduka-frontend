@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 export function CTASection() {
   return (
     <section className="bg-white px-4 py-16 sm:px-6 lg:px-8">
-      <div className="realtive mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#0d22a8] to-[#06115a] px-6 py-12 text-center shadow-2xl sm:px-10 lg:py-16">
-        <div className="absolute left-[-80px] top-24 h-64 w-64 rounded-full bg-[#F25019]/20 blur-3xl" />
-        <div className="absolute bottom-20 right-[-80px] h-72 w-72 rounded-full bg-white/10 blur-3xl" />
+      <div className="realtive mx-auto max-w-7xl overflow-hidden rounded-4xl bg-linear-to-br from-[#0d22a8] to-[#06115a] px-6 py-12 text-center shadow-2xl sm:px-10 lg:py-16">
+        <div className="absolute -left-20 top-24 h-64 w-64 rounded-full bg-[#F25019]/20 blur-3xl" />
+        <div className="absolute bottom-20 -right-20 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
         <p className="text-sm font-bold uppercase tracking-wide ">
           Start Learning Today
         </p>

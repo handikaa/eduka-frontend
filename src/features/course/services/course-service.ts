@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-
+import { api } from "@/lib/api";
 import {
   createDummyCourseListResponse,
   dummyCourseCategoryResponse,
@@ -7,6 +7,7 @@ import {
 } from "@/features/course/constants/course-dummy-data";
 import {
   CourseCategoryResponse,
+  CourseDetailResponse,
   CourseListResponse,
   GetCoursesParams,
   GetRecommendedCoursesParams,
@@ -38,6 +39,8 @@ function simulateDelay(ms = 400): Promise<void> {
     setTimeout(resolve, ms);
   });
 }
+
+
 
 export const courseService = {
   getCourses: async ({
@@ -169,4 +172,22 @@ export const courseService = {
       throw new Error(getCourseErrorMessage(error));
     }
   },
+
+  getCourseDetailBySlug: async (slug: string): Promise<CourseDetailResponse> => {
+  try {
+    const response = await api.get<CourseDetailResponse>(
+      `/courses/slug/${slug}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error(getCourseErrorMessage(error));
+  }
+},
 };

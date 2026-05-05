@@ -10,6 +10,12 @@ export type CourseCategory = {
   updated_at?: string;
 };
 
+export type CourseDetailResponse = {
+  success: boolean;
+  message: string;
+  data: Course;
+};
+
 export type GetRecommendedCoursesParams = {
   recommended: number;
   page?: number;

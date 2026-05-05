@@ -28,7 +28,7 @@ export function ValuesSection() {
               return (
                 <article
                   key={item.title}
-                  className="flex gap-4 rounded-[1.5rem] border border-gray-200 bg-white p-6 shadow-sm"
+                  className="flex gap-4 rounded-3xl border border-gray-200 bg-white p-6 shadow-sm"
                 >
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#F25019]/10 text-[#F25019]">
                     <Icon className="h-6 w-6" />

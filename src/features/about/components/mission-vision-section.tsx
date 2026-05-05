@@ -4,7 +4,7 @@ export function MissionVisionSection() {
   return (
     <section className="bg-gray-50 px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-2">
-        <article className="rounded-[2rem] border border-gray-200 bg-white p-8 shadow-sm">
+        <article className="rounded-4xl border border-gray-200 bg-white p-8 shadow-sm">
           <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0d22a8]/10 text-[#0d22a8]">
             <Telescope className="h-7 w-7" />
           </div>
@@ -24,7 +24,7 @@ export function MissionVisionSection() {
           </p>
         </article>
 
-        <article className="rounded-[2rem] border border-gray-200 bg-[#0d22a8] p-8 text-white shadow-xl">
+        <article className="rounded-4xl border border-gray-200 bg-[#0d22a8] p-8 text-white shadow-xl">
           <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-[#F25019]">
             <Target className="h-7 w-7" />
           </div>

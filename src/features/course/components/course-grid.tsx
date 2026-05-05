@@ -8,6 +8,8 @@ import { Loading } from "@/components/ui/loading";
 import { Pagination } from "@/components/ui/pagination";
 import { useCourse } from "@/features/course/hooks/use-course";
 
+const FALLBACK_COURSE_IMAGE = "/images/image-not-available.jpg";
+
 export function CourseGrid() {
   const {
     courses,
@@ -92,8 +94,9 @@ export function CourseGrid() {
           const primaryCategory = course.categories[0]?.name || "General";
 
           const thumbnailUrl =
-            course.thumbnail_url ||
-            "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop";
+            course.thumbnail_url && course.thumbnail_url.trim() !== ""
+              ? course.thumbnail_url
+              : FALLBACK_COURSE_IMAGE;
 
           return (
             <CourseCard
@@ -105,7 +108,7 @@ export function CourseGrid() {
               lessons={course.lessons.length}
               description={course.description}
               thumbnailUrl={thumbnailUrl}
-              href={`/course/${course.slug}`}
+              href={`/courses/${course.slug}`}
             />
           );
         })}

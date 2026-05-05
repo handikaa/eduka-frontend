@@ -42,7 +42,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/course"
+                  href="/courses"
                   className="transition-colors hover:text-[#F25019]"
                 >
                   Courses
@@ -97,7 +97,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/course"
+                  href="/courses"
                   className="transition-colors hover:text-[#F25019]"
                 >
                   Mulai Belajar
