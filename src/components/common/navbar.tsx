@@ -32,7 +32,7 @@ export function Navbar() {
   const publicLinks = [
     { label: "Home", href: "/" },
     { label: "Courses", href: "/courses" },
-    { label: "Blog", href: "/" },
+    { label: "Blog", href: "/blog" },
     { label: "About Us", href: "/" },
   ];
 

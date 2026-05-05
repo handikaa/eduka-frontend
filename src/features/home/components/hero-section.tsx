@@ -102,6 +102,10 @@ export function HeroSection() {
               <p className="text-sm font-medium text-gray-500">Course Ready</p>
               <p className="text-2xl font-extrabold text-[#0d22a8]">120+</p>
             </div>
+            <div className="absolute -left-5 top-0 hidden rounded-2xl bg-white px-5 py-4 shadow-xl lg:block">
+              <p className="text-sm font-medium text-gray-500">Mentor Expert</p>
+              <p className="text-2xl font-extrabold text-[#0d22a8]">50+</p>
+            </div>
           </div>
         </div>
       </div>

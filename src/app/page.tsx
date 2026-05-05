@@ -10,7 +10,7 @@ export default function HomePage() {
   return (
     <main>
       <HeroSection />
-      <StatsSection/>
+      {/* <StatsSection/> */}
       <CoursePreviewSection/>
       <FeaturesSection/>
       <HowItWorksSection/>
