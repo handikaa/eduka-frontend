@@ -66,13 +66,13 @@ export default function BlogPage() {
       <section className="px-4 py-10 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           {isLoading && (
-            <div className="rounded-[1.5rem] border border-gray-200 bg-white p-8">
+            <div className="rounded-3xl border border-gray-200 bg-white p-8">
               <Loading text="Mengambil artikel blog..." />
             </div>
           )}
 
           {errorMessage && !isLoading && (
-            <div className="rounded-[1.5rem] border border-red-200 bg-red-50 p-8 text-center">
+            <div className="rounded-3xl border border-red-200 bg-red-50 p-8 text-center">
               <p className="text-sm font-semibold text-red-700">
                 {errorMessage}
               </p>
@@ -90,7 +90,7 @@ export default function BlogPage() {
           )}
 
           {!isLoading && !errorMessage && articles.length === 0 && (
-            <div className="rounded-[1.5rem] border border-gray-200 bg-white p-8 text-center">
+            <div className="rounded-3xl border border-gray-200 bg-white p-8 text-center">
               <p className="text-lg font-bold text-gray-950">
                 Artikel tidak ditemukan
               </p>
@@ -102,7 +102,7 @@ export default function BlogPage() {
 
           {!isLoading && !errorMessage && articles.length > 0 && (
             <div className="space-y-8">
-              <div className="flex flex-col justify-between gap-3 rounded-[1.5rem] border border-gray-200 bg-white px-5 py-4 sm:flex-row sm:items-center">
+              <div className="flex flex-col justify-between gap-3 rounded-3xl border border-gray-200 bg-white px-5 py-4 sm:flex-row sm:items-center">
                 <div>
                   <h2 className="text-xl font-extrabold text-gray-950">
                     Latest Articles

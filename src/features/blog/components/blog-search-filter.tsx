@@ -23,7 +23,7 @@ export function BlogSearchFilter({
   return (
     <section className="bg-white px-4 pb-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <div className="rounded-[1.5rem] border border-gray-200 bg-white p-4 shadow-xl sm:p-6">
+        <div className="rounded-3xl border border-gray-200 bg-white p-4 shadow-xl sm:p-6">
           <form
             onSubmit={onSearchSubmit}
             className="grid items-center gap-4 lg:grid-cols-[1fr_220px_auto]"

@@ -84,17 +84,17 @@ export function HeroSection() {
                 width={700}
                 height={800}
                 priority
-                className="h-[420px] w-full object-cover sm:h-[520px] lg:h-[620px]"
+                className="h-105 w-full object-cover sm:h-130 lg:h-155"
               />
             </div>
 
-            <div className="absolute -bottom-8 -left-8 z-20 hidden rounded-[1.5rem] border-1 border-white bg-white p-1 shadow-2xl lg:block">
+            <div className="absolute -bottom-8 -left-8 z-20 hidden rounded-3xl border border-white bg-white p-1 shadow-2xl lg:block">
               <Image
                 src="/images/hero-small.jpg"
                 alt="Online learning preview"
                 width={280}
                 height={200}
-                className="h-[170px] w-[240px] rounded-[1.25rem] object-cover"
+                className="h-42.5 w-60 rounded-[1.25rem] object-cover"
               />
             </div>
 

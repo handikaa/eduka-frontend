@@ -27,7 +27,7 @@ export function CourseSearchFilterSection() {
   return (
     <section className="bg-white mt-20 p-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <div className=" rounded-[1.5rem] border border-gray-200 bg-white p-4 shadow-xl sm:p-6">
+        <div className=" rounded-3xl border border-gray-200 bg-white p-4 shadow-xl sm:p-6">
           <div className="grid gap-4 lg:grid-cols-[1fr_180px_180px_auto]">
             <div className="relative">
               <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />

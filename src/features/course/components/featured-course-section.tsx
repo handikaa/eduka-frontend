@@ -49,13 +49,13 @@ export function FeaturedCourseSection() {
         </div>
 
         {isRecommendedLoading && (
-          <div className="rounded-[1.5rem] border border-gray-200 bg-white p-8">
+          <div className="rounded-3xl border border-gray-200 bg-white p-8">
             <Loading text="Mengambil recommended course..." />
           </div>
         )}
 
         {recommendedErrorMessage && !isRecommendedLoading && (
-          <div className="rounded-[1.5rem] border border-red-200 bg-red-50 p-8 text-center">
+          <div className="rounded-3xl border border-red-200 bg-red-50 p-8 text-center">
             <p className="text-sm font-semibold text-red-700">
               {recommendedErrorMessage}
             </p>
@@ -77,7 +77,7 @@ export function FeaturedCourseSection() {
         {!isRecommendedLoading &&
           !recommendedErrorMessage &&
           recommendedCourses.length === 0 && (
-            <div className="rounded-[1.5rem] border border-gray-200 bg-white p-8 text-center">
+            <div className="rounded-3xl border border-gray-200 bg-white p-8 text-center">
               <p className="text-lg font-bold text-gray-950">
                 Belum ada rekomendasi course
               </p>
@@ -103,7 +103,7 @@ export function FeaturedCourseSection() {
                   return (
                     <div
                       key={course.id}
-                      className="w-[300px] shrink-0 snap-start sm:w-[340px] lg:w-[360px]"
+                      className="w-75 shrink-0 snap-start sm:w-85 lg:w-90"
                     >
                       <CourseCard
                         title={course.title}

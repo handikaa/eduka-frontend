@@ -15,8 +15,8 @@ export function CoursePageContent() {
       <CourseSearchFilterSection />
       <CourseCatalogSection />
       <FeaturedCourseSection />
-      <CourseBenefitsSection/>
-      <CourseCTASection/>
+      {/* <CourseBenefitsSection/>
+      <CourseCTASection/> */}
       {/* 
       */}
     </CourseProvider>

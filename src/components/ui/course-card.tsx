@@ -24,7 +24,7 @@ export function CourseCard({
   href = "/course",
 }: CourseCardProps) {
   return (
-    <article className="group overflow-hidden rounded-[1.5rem] border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+    <article className="group overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
       <div className="relative h-52 overflow-hidden">
         <Image
           src={thumbnailUrl}
@@ -34,7 +34,7 @@ export function CourseCard({
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/50 via-black/10 to-transparent" />
 
         <div className="absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-xs font-bold text-[#0d22a8] shadow-sm">
           {category}
