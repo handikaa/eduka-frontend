@@ -1,7 +1,7 @@
 "use client";
 
 import { CourseLesson } from "@/features/course/types/course.type";
-
+import { getProxiedMediaUrl } from "@/lib/media-url";
 type CoursePreviewPlayerProps = {
   selectedLesson: CourseLesson | null;
   thumbnailUrl: string;
@@ -11,14 +11,17 @@ export function CoursePreviewPlayer({
   selectedLesson,
   thumbnailUrl,
 }: CoursePreviewPlayerProps) {
+const safeThumbnailUrl = getProxiedMediaUrl(thumbnailUrl);
+const safeVideoUrl = getProxiedMediaUrl(selectedLesson?.video_url);
+
   if (!selectedLesson) {
     return (
       <div className="relative flex aspect-video items-center justify-center overflow-hidden rounded-[2rem] bg-gray-900">
-        <img
-          src={thumbnailUrl}
-          alt="Course thumbnail"
-          className="h-full w-full object-cover opacity-70"
-        />
+       <img
+  src={safeThumbnailUrl}
+  alt="Course thumbnail"
+  className="h-full w-full object-cover opacity-70"
+/>
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
@@ -49,16 +52,12 @@ export function CoursePreviewPlayer({
     );
   }
 
-  return (
-    <div className="overflow-hidden rounded-[2rem] bg-black shadow-xl">
-      <video
-        key={selectedLesson.id}
-        controls
-        className="aspect-video w-full"
-      >
-        <source src={selectedLesson.video_url} type="video/mp4" />
-        Browser kamu tidak mendukung pemutar video.
-      </video>
-    </div>
-  );
+return (
+  <div className="overflow-hidden rounded-[2rem] bg-black shadow-xl">
+    <video key={selectedLesson.id} controls className="aspect-video w-full">
+      <source src={safeVideoUrl} type="video/mp4" />
+      Browser kamu tidak mendukung pemutar video.
+    </video>
+  </div>
+);
 }

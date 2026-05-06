@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { CalendarDays, Layers, Star } from "lucide-react";
-
+import { getProxiedMediaUrl } from "@/lib/media-url";
 import { Course } from "@/features/course/types/course.type";
 
 type CourseDetailHeroProps = {
@@ -13,17 +13,18 @@ export function CourseDetailHero({
   thumbnailUrl,
 }: CourseDetailHeroProps) {
   const primaryCategory = course.categories[0]?.name || "General";
-
+const safeThumbnailUrl = getProxiedMediaUrl(thumbnailUrl);
   return (
     <section className="relative overflow-hidden px-4 py-16 text-white sm:px-6 lg:px-8 lg:py-24">
-      <Image
-        src={thumbnailUrl}
-        alt={course.title}
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover"
-      />
+     <Image
+  src={safeThumbnailUrl}
+  alt={course.title}
+  fill
+  priority
+  unoptimized
+  sizes="100vw"
+  className="object-cover"
+/>
 
       <div className="absolute inset-0 bg-linear-to-br from-[#0d22a8]/15 via-[#101f8f]/55 to-[#06115a]/95" />
       <div className="absolute inset-0 bg-black/30" />

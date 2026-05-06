@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Clock, Star, BookOpen } from "lucide-react";
-
+import { getProxiedMediaUrl } from "@/lib/media-url";
 type CourseCardProps = {
   title: string;
   category: string;
@@ -23,11 +23,14 @@ export function CourseCard({
   thumbnailUrl,
   href = "/course",
 }: CourseCardProps) {
+
+const safeThumbnailUrl = getProxiedMediaUrl(thumbnailUrl);
+
   return (
     <article className="group overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
       <div className="relative h-52 overflow-hidden">
-      <Image
-  src={thumbnailUrl}
+     <Image
+  src={safeThumbnailUrl}
   alt={title}
   fill
   unoptimized
