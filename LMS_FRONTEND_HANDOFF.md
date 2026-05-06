@@ -2,28 +2,26 @@
 
 ## 1. Project Overview
 
-This project is a frontend application for an **Learning Management System (LMS)** named **Eduka**. The application is built with **Next.js App Router**, **React**, **TypeScript**, **Tailwind CSS**, and **Axios**.
+This project is a frontend application for an LMS named **Eduka**. It is built with **Next.js App Router, React, TypeScript, Tailwind CSS, Axios, React Hook Form, Zod, and Lucide React**.
 
-The goal of this project is to provide a clean, modular, and scalable frontend that connects to a Laravel-based LMS backend API. The system supports public landing pages, authentication, course discovery, course detail preview, blog content, and protected student/dashboard features.
+The system is designed as a frontend for a Learning Management System that supports public landing pages, authentication, student dashboard, course catalog, course detail preview, user listing, blog content, and future mentor/instructor workflows.
 
-This handoff document is intended to help another AI assistant or developer quickly understand the current project state, feature structure, business rules, API contracts, routing decisions, and next development direction.
+The current frontend has evolved from a React mini project requirement into a more complete LMS frontend. The early mini project requirements were authentication, protected route, user list, user detail, pagination, and responsive design. Those parts are already implemented and documented in the earlier project docs. The current state also includes a full landing page experience with Home, Courses, Blog, and About Us pages, plus real API integration for course data.
 
 ---
 
 ## 2. Main Purpose of the System
 
-Eduka is an LMS platform that supports:
+Eduka is an LMS frontend for:
 
-1. Public landing pages for marketing and course discovery.
-2. Authentication for students and instructors.
-3. Course listing and course detail preview.
-4. Course checkout flow preparation.
-5. Course preview lessons for guest/student users who have not enrolled.
-6. Blog page powered by NewsAPI.
-7. Dashboard and user list features for authenticated users.
-8. Future instructor/mentor flow for course management.
+1. Allowing visitors to explore the learning platform.
+2. Allowing students to register, login, browse courses, view course detail, and later checkout/enroll.
+3. Allowing instructors or mentors to later register, login, create courses, and manage their own courses.
+4. Displaying course catalog data from the backend API.
+5. Displaying educational blog/news content from NewsAPI.
+6. Providing responsive landing pages for desktop, tablet, and mobile.
 
-The current focus has been on **landing page slicing and API integration**.
+The project follows a modular, feature-based structure so each domain such as `auth`, `users`, `course`, `home`, `blog`, and `about` has its own components, hooks, services, types, and context where needed.
 
 ---
 
@@ -31,81 +29,110 @@ The current focus has been on **landing page slicing and API integration**.
 
 | Technology | Purpose |
 |---|---|
-| Next.js | React framework, App Router, routing, layout |
-| React | UI development |
-| TypeScript | Type safety for API responses, props, context, hooks |
-| Tailwind CSS | Styling and responsive design |
-| Axios | HTTP client for backend API requests |
-| React Hook Form | Form handling for login/register |
+| Next.js App Router | Routing, layouts, pages, dynamic routes |
+| React | UI library |
+| TypeScript | Type safety for props, API response, state, and context |
+| Tailwind CSS | Utility-first responsive styling |
+| Axios | HTTP client for backend API integration |
+| React Hook Form | Form state management |
 | Zod | Form validation schema |
-| @hookform/resolvers | Zod integration with React Hook Form |
-| Lucide React | Icon library |
-| NewsAPI.org | External API source for blog articles |
+| @hookform/resolvers | Connect Zod with React Hook Form |
+| Lucide React | Icons |
+| NewsAPI | External open-source news/blog API |
+| Laravel Backend API | LMS data source for auth, users, courses, categories, and course detail |
 
 ---
 
-## 4. Core Design System
+## 4. Environment Variables
 
-The UI consistently uses the following primary colors:
+The project uses `.env.local` for API base URLs and secret keys.
 
-```txt
-Primary   : #0d22a8
-Secondary : #F25019
-```
-
-Common styling direction:
-
-- Rounded cards: `rounded-3xl` or `rounded-[1.5rem]`
-- White card background
-- Soft shadows: `shadow-sm`, `shadow-xl`, `shadow-2xl`
-- Gradient sections: `from-[#0d22a8] via-[#101f8f] to-[#06115a]`
-- Accent/CTA buttons: `#F25019`
-- Responsive first: mobile-first Tailwind classes
-
----
-
-## 5. Environment Variables
-
-The project uses `.env.local` for API configuration.
-
-### Local backend
+Example:
 
 ```env
 NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000/api/v1
+NEWS_API_BASE_URL=https://newsapi.org/v2
+NEWS_API_KEY=your_news_api_key_here
 ```
 
-### Staging backend
+For staging backend:
 
 ```env
 NEXT_PUBLIC_API_BASE_URL=http://38.47.180.195/student02/api/v1
 ```
 
-### Blog / NewsAPI
+Important notes:
 
-```env
-NEWS_API_BASE_URL=https://newsapi.org/v2
-NEWS_API_KEY=your_news_api_key_here
-```
-
-Notes:
-
-- `NEXT_PUBLIC_API_BASE_URL` is used by frontend/browser API calls through Axios.
-- `NEWS_API_KEY` must not use `NEXT_PUBLIC_` because it should stay server-side.
-- Blog requests use a Next.js API route proxy so the NewsAPI key is not exposed directly to the browser.
+- `NEXT_PUBLIC_API_BASE_URL` is exposed to the browser because frontend requests use it.
+- `NEWS_API_KEY` must **not** use `NEXT_PUBLIC_`, because it should stay server-side.
+- NewsAPI is accessed through an internal Next.js API route so the API key is not exposed in browser code.
 
 ---
 
-## 6. Important Next.js Image Configuration
+## 5. API Base URL Strategy
 
-The backend returns image URLs such as:
+The project supports local and staging APIs.
+
+Local backend:
 
 ```txt
-http://127.0.0.1:8000/storage/courses/thumbnails/filename.webp
+http://127.0.0.1:8000/api/v1
 ```
 
-Because `next/image` blocks unconfigured external hosts, `next.config.ts` needs remote image configuration.
+Staging backend:
 
-Recommended current config:
+```txt
+http://38.47.180.195/student02/api/v1
+```
+
+Axios instance is located in:
+
+```txt
+src/lib/api.ts
+```
+
+Expected implementation:
+
+```ts
+import axios from "axios";
+
+import { STORAGE_KEYS } from "@/lib/constans";
+import { storage } from "@/lib/storage";
+
+export const api = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  },
+});
+
+api.interceptors.request.use((config) => {
+  const token = storage.getItem(STORAGE_KEYS.TOKEN);
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+```
+
+---
+
+## 6. Next Image Configuration
+
+The backend can return thumbnails from local Laravel storage and staging storage.
+
+Examples:
+
+```txt
+http://127.0.0.1:8000/storage/courses/thumbnails/example.webp
+http://38.47.180.195/storage/...
+http://38.47.180.195/student02/storage/...
+```
+
+`next.config.ts` should support these sources:
 
 ```ts
 import type { NextConfig } from "next";
@@ -149,33 +176,56 @@ const nextConfig: NextConfig = {
 export default nextConfig;
 ```
 
-Notes:
+Reason:
 
-- `dangerouslyAllowLocalIP` should only be enabled in development.
-- For dynamic external blog images, the blog card uses plain `<img>` instead of `next/image`, because NewsAPI image hosts vary widely.
+- `next/image` blocks remote domains unless configured.
+- Next.js 16 can block upstream images that resolve to local/private IP such as `127.0.0.1`; `dangerouslyAllowLocalIP` is only enabled during development.
+- For production, prefer public staging URLs, not `127.0.0.1`.
 
 ---
 
-## 7. Current High-Level Folder Structure
+## 7. Current Main Routes
 
-The project uses a feature-based structure.
+| Route | Access | Description |
+|---|---|---|
+| `/` | Public | Home landing page |
+| `/courses` | Public | Course catalog page |
+| `/courses/[slug]` | Public for preview mode | Course detail preview page |
+| `/blog` | Public | Blog page using NewsAPI |
+| `/about-us` | Public | About Us landing page |
+| `/login` | Guest only | Login page |
+| `/register` | Guest only | Register page, supports role testing |
+| `/dashboard` | Protected | User dashboard |
+| `/users/[id]` | Protected | User detail page |
+
+Important route convention:
+
+- The project uses `/courses` with **s** for course catalog and detail routes.
+- Course card detail links should use:
+
+```tsx
+href={`/courses/${course.slug}`}
+```
+
+Do not use `/course/${slug}` unless the route is changed globally.
+
+---
+
+## 8. Current High-Level Project Structure
 
 ```txt
 src/
 ├── app/
 │   ├── page.tsx
 │   ├── layout.tsx
-│   ├── login/
-│   ├── register/
-│   ├── dashboard/
-│   ├── users/[id]/
-│   ├── courses/
-│   │   ├── page.tsx
-│   │   └── [slug]/page.tsx
-│   ├── blog/
-│   │   └── page.tsx
-│   ├── about-us/
-│   │   └── page.tsx
+│   ├── login/page.tsx
+│   ├── register/page.tsx
+│   ├── dashboard/page.tsx
+│   ├── users/[id]/page.tsx
+│   ├── courses/page.tsx
+│   ├── courses/[slug]/page.tsx
+│   ├── blog/page.tsx
+│   ├── about-us/page.tsx
 │   └── api/news/route.ts
 │
 ├── components/
@@ -202,34 +252,25 @@ src/
 │
 └── lib/
     ├── api.ts
-    ├── constans.ts / constants.ts
+    ├── constans.ts
     └── storage.ts
 ```
 
-Important note: the project currently uses route `/courses` with an **s** for course listing and detail route:
-
-```txt
-/courses
-/courses/[slug]
-```
-
-Older examples may still reference `/course`. Use `/courses` consistently going forward.
+Note: Some files use `constans.ts` instead of `constants.ts`. Keep imports consistent unless refactoring.
 
 ---
 
-## 8. Global Reusable Components
+## 9. Reusable UI Components
 
 ### `Button`
 
-File:
+Located at:
 
 ```txt
 src/components/ui/button.tsx
 ```
 
-Used across forms, CTA, pagination, navbar, checkout card, error retry, etc.
-
-Common variants:
+Supports variants such as:
 
 ```txt
 primary
@@ -239,29 +280,35 @@ outline
 ghost, if added
 ```
 
+Used across auth, navbar, footer, course, blog, CTA, and error states.
+
 ### `Input`
 
-File:
+Located at:
 
 ```txt
 src/components/ui/input.tsx
 ```
 
-Reusable input with label and error message support.
+Supports:
+
+- label
+- error message
+- regular input props
 
 ### `Loading`
 
-File:
+Located at:
 
 ```txt
 src/components/ui/loading.tsx
 ```
 
-Used for loading states across auth, users, course, blog.
+Used for data fetching states.
 
 ### `Pagination`
 
-File:
+Located at:
 
 ```txt
 src/components/ui/pagination.tsx
@@ -276,21 +323,21 @@ onPageChange
 showPageInput?: boolean
 ```
 
-Important: blog and course page can use `showPageInput` to allow direct page jump.
+`showPageInput` allows users to input a page number directly and jump to that page.
 
 ### `CourseCard`
 
-File:
+Located at:
 
 ```txt
 src/components/ui/course-card.tsx
 ```
 
-Reusable course card used in:
+Reusable for:
 
-- Home course preview section
-- Courses catalog grid
-- Recommended courses horizontal scroll
+- Home Course Preview Section
+- Course Catalog Section
+- Recommended Course Section
 
 Props:
 
@@ -305,48 +352,49 @@ thumbnailUrl: string;
 href?: string;
 ```
 
-If `thumbnail_url` from backend is empty/null, map it to:
+Business rule:
 
-```txt
-/images/image-not-available.png
+- If `thumbnail_url` is null or empty, map it before passing to `CourseCard`:
+
+```ts
+const thumbnailUrl =
+  course.thumbnail_url && course.thumbnail_url.trim() !== ""
+    ? course.thumbnail_url
+    : "/images/image-not-available.png";
 ```
 
 ---
 
-## 9. Auth Feature
+## 10. Auth Feature
 
-Folder:
+Located at:
 
 ```txt
-src/features/auth/
-├── components/
-│   ├── login-form.tsx
-│   └── register-form.tsx
-├── context/
-│   └── auth-context.tsx
-├── hooks/
-│   └── use-auth.ts
-├── services/
-│   └── auth-service.ts
-├── types/
-│   └── auth.type.ts
-└── validations/
-    └── auth-schema.ts
+src/features/auth
 ```
 
-### Auth Responsibilities
+Responsibilities:
 
 - Login
 - Register
 - Logout
-- Store token and user data in localStorage
-- Provide global auth state through React Context
-- Protect pages with `ProtectedRoute`
-- Prevent logged-in user from returning to login/register using `GuestRoute`
+- Store token and user in localStorage
+- Provide global auth state using React Context
+- Guard guest and protected pages
 
-### Auth response shape
+Important files:
 
-Login success:
+```txt
+features/auth/components/login-form.tsx
+features/auth/components/register-form.tsx
+features/auth/context/auth-context.tsx
+features/auth/hooks/use-auth.ts
+features/auth/services/auth-service.ts
+features/auth/types/auth.type.ts
+features/auth/validations/auth-schema.ts
+```
+
+Auth response success example:
 
 ```json
 {
@@ -359,13 +407,13 @@ Login success:
       "email": "student389884841614@lms.local",
       "role": "student"
     },
-    "token": "token",
+    "token": "6|token",
     "token_type": "Bearer"
   }
 }
 ```
 
-Login failed:
+Auth error response example:
 
 ```json
 {
@@ -374,88 +422,110 @@ Login failed:
 }
 ```
 
-### Important auth behavior
+Business rules:
 
-- Use `router.replace("/dashboard")` after successful login/register to avoid browser back returning to login page.
-- Auth context initializes user/token from localStorage using lazy `useState` initialization to avoid setState inside effect lint issues.
-- Axios service should throw backend error message, not default Axios error like `Request failed with status code 401`.
+- After login/register success, save `user` and `token` to localStorage.
+- `AuthContext` provides `isAuthenticated`.
+- `GuestRoute` prevents logged-in users from revisiting login/register.
+- `ProtectedRoute` prevents guests from accessing protected pages.
+- Browser back issue from dashboard to login was handled using `GuestRoute` and `router.replace` where appropriate.
 
 ---
 
-## 10. Users Feature
+## 11. Register Roles
 
-Folder:
+Register form currently supports role testing.
+
+Known roles:
 
 ```txt
-src/features/users/
-├── components/
-│   ├── user-card.tsx
-│   ├── user-list.tsx
-│   └── user-detail-card.tsx
-├── hooks/
-│   ├── use-users.ts
-│   └── use-user-detail.ts
-├── services/
-│   └── user-service.ts
-└── types/
-    └── user.type.ts
+student
+instructor
 ```
 
-### Users API
+Footer mentor links use:
 
-List users:
+```txt
+/register?role=instructor
+```
+
+Future enhancement:
+
+- `RegisterForm` should read query param `role=instructor` and preselect instructor/mentor role.
+- Production should not expose all sensitive roles publicly. Admin-level roles should be controlled server-side.
+
+---
+
+## 12. Users Feature
+
+Located at:
+
+```txt
+src/features/users
+```
+
+Responsibilities:
+
+- Fetch user list
+- Show users in dashboard
+- Show user detail by ID
+- Pagination
+
+Endpoints:
 
 ```txt
 GET /users?page=1&per_page=10
-```
-
-Detail user:
-
-```txt
 GET /auth/user/{id}
 ```
 
-### Current usage
+Important files:
 
-- User list is shown on dashboard.
-- User detail route exists at `/users/[id]`.
-- User list supports pagination.
+```txt
+features/users/components/user-card.tsx
+features/users/components/user-list.tsx
+features/users/components/user-detail-card.tsx
+features/users/hooks/use-users.ts
+features/users/hooks/use-user-detail.ts
+features/users/services/user-service.ts
+features/users/types/user.type.ts
+```
+
+Business rules:
+
+- User list is shown in `/dashboard`.
+- User detail route is `/users/[id]`.
+- User list and detail are protected routes.
 
 ---
 
-## 11. Landing Page Scope
+## 13. Landing Page Pages
 
-The landing page area currently includes four primary public pages:
-
-```txt
-/
-/courses
-/blog
-/about-us
-```
-
-Navbar should show active page indicator using `usePathname()`.
-
-Current public navbar items:
+The landing page now consists of 4 main public pages:
 
 ```txt
-Home       -> /
-Courses    -> /courses
-Blog       -> /blog
-About Us   -> /about-us
+Home
+Courses
+Blog
+About Us
 ```
 
-Authenticated navbar additionally includes:
+Navbar should contain:
 
 ```txt
-Users
-Dashboard
-Logout
+Home -> /
+Courses -> /courses
+Blog -> /blog
+About Us -> /about-us
 ```
+
+Navbar has active indicator:
+
+- Desktop: orange underline/pill indicator.
+- Mobile: active link has primary blue background.
 
 ---
 
-## 12. Home Page
+## 14. Home Page
 
 Route:
 
@@ -474,44 +544,39 @@ Home page sections:
 6. CTA Section
 ```
 
-`StatsSection` exists conceptually but is currently commented out.
+`StatsSection` exists or was planned, but currently may be commented out.
 
-Home page file:
-
-```txt
-src/app/page.tsx
-```
-
-Feature folder:
+Important files:
 
 ```txt
-src/features/home/
-├── components/
-│   ├── hero-section.tsx
-│   ├── course-preview-section.tsx
-│   ├── features-section.tsx
-│   ├── how-it-works-section.tsx
-│   ├── testimonials-section.tsx
-│   └── cta-section.tsx
-├── hooks/
-│   └── use-popular-courses.ts
-├── services/
-│   └── home-service.ts
-└── constants/
-    └── home-data.ts
+src/features/home/components/hero-section.tsx
+src/features/home/components/course-preview-section.tsx
+src/features/home/components/features-section.tsx
+src/features/home/components/how-it-works-section.tsx
+src/features/home/components/testimonials-section.tsx
+src/features/home/components/cta-section.tsx
+src/features/home/constants/home-data.ts
+src/features/home/hooks/use-popular-courses.ts
+src/features/home/services/home-service.ts
 ```
 
-### Home Course Preview
+### Home Course Preview Fetch
 
-This section now fetches course data from the backend instead of static data.
+`CoursePreviewSection` fetches course data from the backend instead of static data.
 
-API:
+Endpoint:
 
 ```txt
 GET /courses?page=1&per_page=10
 ```
 
-Service flow:
+Purpose:
+
+- Show popular or preview courses on the homepage.
+- Uses real backend course data.
+- Renders with reusable `CourseCard`.
+
+Expected service flow:
 
 ```txt
 CoursePreviewSection
@@ -523,15 +588,9 @@ homeService.getPopularCourses
 GET /courses?page=1&per_page=10
 ```
 
-Course cards in Home should link to:
-
-```txt
-/courses/{course.slug}
-```
-
 ---
 
-## 13. Courses Page
+## 15. Courses Page
 
 Route:
 
@@ -539,7 +598,7 @@ Route:
 /courses
 ```
 
-Course page sections:
+Sections:
 
 ```txt
 1. Course Hero Section
@@ -550,179 +609,88 @@ Course page sections:
 6. CTA Section, currently may be commented
 ```
 
-Course page wrapper:
-
-```tsx
-export function CoursePageContent() {
-  return (
-    <CourseProvider>
-      <CourseHeroSection />
-      <CourseSearchFilterSection />
-      <CourseCatalogSection />
-      <FeaturedCourseSection />
-      {/* <CourseBenefitsSection /> */}
-      {/* <CourseCTASection /> */}
-    </CourseProvider>
-  );
-}
-```
-
-Feature folder:
+Important files:
 
 ```txt
-src/features/course/
-├── components/
-│   ├── course-page-content.tsx
-│   ├── course-hero-section.tsx
-│   ├── course-search-filter-section.tsx
-│   ├── course-catalog-section.tsx
-│   ├── course-category-sidebar.tsx
-│   ├── course-category-tabs.tsx
-│   ├── course-grid.tsx
-│   ├── featured-course-section.tsx
-│   ├── course-benefits-section.tsx
-│   ├── course-cta-section.tsx
-│   ├── course-detail-preview-page.tsx
-│   ├── course-detail-hero.tsx
-│   ├── course-preview-player.tsx
-│   ├── course-lesson-preview-list.tsx
-│   └── course-checkout-card.tsx
-├── context/
-│   └── course-context.tsx
-├── hooks/
-│   ├── use-course.ts
-│   └── use-course-detail.ts
-├── services/
-│   └── course-service.ts
-├── constants/
-│   └── course-dummy-data.ts, legacy only
-└── types/
-    └── course.type.ts
+src/features/course/components/course-page-content.tsx
+src/features/course/components/course-hero-section.tsx
+src/features/course/components/course-search-filter-section.tsx
+src/features/course/components/course-catalog-section.tsx
+src/features/course/components/course-category-sidebar.tsx
+src/features/course/components/course-category-tabs.tsx
+src/features/course/components/course-grid.tsx
+src/features/course/components/featured-course-section.tsx
+src/features/course/components/course-benefits-section.tsx
+src/features/course/components/course-cta-section.tsx
+src/features/course/context/course-context.tsx
+src/features/course/hooks/use-course.ts
+src/features/course/hooks/use-course-detail.ts
+src/features/course/services/course-service.ts
+src/features/course/types/course.type.ts
 ```
 
----
-
-## 14. Courses API Integration
-
-### List courses
-
-Endpoint:
+### Course Page Data Flow
 
 ```txt
-GET /courses
+CoursePageContent
+↓
+CourseProvider
+↓
+fetchCategories()
+GET /categories
+↓
+fetchCourses(filters)
+GET /courses with params
+↓
+CourseSearchFilterSection changes filters
+↓
+CourseCatalogSection renders categories and CourseGrid
 ```
 
-Params:
-
-```txt
-category_id
-level
-search
-page
-per_page
-status
-```
-
-Current intended default params for public course catalog:
-
-```txt
-category_id=
-level=
-search=
-page=1
-per_page=5
-status=published
-```
-
-Example:
+### Course List Endpoint
 
 ```txt
 GET /courses?level=intermediate&category_id=&search=&page=1&per_page=5&status=published
 ```
 
-Response shape:
+Params:
 
-```json
-{
-  "success": true,
-  "message": "Berhasil mengambil list course",
-  "data": [],
-  "pagination": {
-    "current_page": 1,
-    "per_page": 5,
-    "total": 2,
-    "last_page": 1,
-    "from": 1,
-    "to": 2
-  }
-}
+| Param | Description |
+|---|---|
+| `category_id` | Filter by category ID, empty if all |
+| `level` | `beginner`, `intermediate`, `advanced`, or empty/all |
+| `search` | Search keyword |
+| `page` | Current page |
+| `per_page` | Number of courses per page |
+| `status` | Default should be `published` for landing page |
+
+Default filters:
+
+```ts
+const initialFilters = {
+  category_id: null,
+  level: "all",
+  search: "",
+  status: "published",
+  page: 1,
+  per_page: 5,
+};
 ```
 
-### List categories
-
-Endpoint:
+### Course Category Endpoint
 
 ```txt
 GET /categories
 ```
 
-Response shape:
+The category list is used for:
 
-```json
-{
-  "success": true,
-  "message": "List category berhasil diambil",
-  "data": [
-    {
-      "id": 1,
-      "name": "Machine Learning 589512764017",
-      "slug": "machine-learning-589512764017",
-      "created_at": "2026-04-29T13:02:44.000000Z",
-      "updated_at": "2026-04-29T13:02:44.000000Z"
-    }
-  ]
-}
-```
+- Desktop category sidebar.
+- Mobile/tablet category tabs.
 
-If backend requires token for `/categories`, the Axios interceptor should attach Bearer token from localStorage. Ideally, for landing page category list, backend should expose this endpoint publicly.
+### Course Context State
 
-### Recommended courses
-
-Endpoint currently uses the same `/courses` endpoint with additional recommended param.
-
-Possible param spelling:
-
-```txt
-recommended=user_id
-```
-
-or backend typo contract:
-
-```txt
-recomended=user_id
-```
-
-Use whatever backend accepts. Previously the business contract mentioned `recomended`.
-
-Default:
-
-```txt
-page=1
-per_page=10
-status=published
-```
-
----
-
-## 15. Course Context Business Logic
-
-File:
-
-```txt
-src/features/course/context/course-context.tsx
-```
-
-CourseProvider manages:
+`CourseContext` manages:
 
 ```txt
 courses
@@ -750,24 +718,56 @@ refetchCourses
 fetchRecommendedCourses
 ```
 
-Recommended initial filter:
+### Course Search & Filter Rules
 
-```ts
-const initialFilters: CourseFilterState = {
-  category_id: null,
-  level: "all",
-  search: "",
-  status: "published",
-  page: 1,
-  per_page: 5,
-};
+- Search input updates `filters.search`.
+- Level select updates `filters.level`.
+- Category sidebar/tabs update `filters.category_id`.
+- Each filter change resets `page` to 1.
+- Status filter is not shown in UI, but default should remain `published`.
+- Clear filters resets to `initialFilters`.
+
+### Course Pagination
+
+`CourseGrid` uses reusable `Pagination`.
+
+Recommended usage:
+
+```tsx
+<Pagination
+  currentPage={filters.page}
+  totalPages={pagination.last_page}
+  onPageChange={setPage}
+  showPageInput
+/>
 ```
 
-Important: status filter is currently hidden in UI but should still default to `published` for public catalog.
+### Recommended Course Section
+
+The `FeaturedCourseSection` shows recommended courses in a horizontal scroll layout.
+
+Endpoint:
+
+```txt
+GET /courses?recommended={user_id}&page=1&per_page=10&status=published
+```
+
+If backend expects typo key:
+
+```txt
+GET /courses?recomended={user_id}&page=1&per_page=10&status=published
+```
+
+Current behavior:
+
+- Uses `user?.id ?? 1` for fallback guest simulation.
+- Renders up to 10 courses.
+- Horizontal scroll.
+- Uses `CourseCard`.
 
 ---
 
-## 16. Course Detail Page
+## 16. Course Detail Preview Page
 
 Route:
 
@@ -775,33 +775,33 @@ Route:
 /courses/[slug]
 ```
 
-App Router page:
+Current focus is **preview mode** for guest or student who has not enrolled.
+
+Planned detail modes:
 
 ```txt
-src/app/courses/[slug]/page.tsx
+1. Preview mode for guest/student not enrolled
+2. Enrolled student mode
+3. Instructor owner mode
 ```
 
-Because the project uses a newer Next.js version, params should be awaited:
+Only mode 1 is currently implemented.
 
-```tsx
-import { CourseDetailPreviewPage } from "@/features/course/components/course-detail-preview-page";
+### Preview Mode Business Rules
 
-type CourseDetailPageProps = {
-  params: Promise<{
-    slug: string;
-  }>;
-};
+For guest or non-enrolled student:
 
-export default async function CourseDetailPage({ params }: CourseDetailPageProps) {
-  const { slug } = await params;
+- Show course detail.
+- Show thumbnail in hero background with overlay.
+- Show course description, categories, level, rating, lessons count.
+- Show video player for preview lessons only.
+- Lessons with `is_preview = true` can be played.
+- Lessons with `is_preview = false` are locked.
+- Right sidebar shows checkout CTA.
+- If guest clicks checkout, redirect to login/register first.
+- If logged-in student clicks checkout, redirect to checkout page.
 
-  return <CourseDetailPreviewPage slug={slug} />;
-}
-```
-
-### Detail API
-
-Endpoint:
+### Course Detail Endpoint
 
 ```txt
 GET /courses/slug/{slug}
@@ -838,113 +838,71 @@ Response:
 }
 ```
 
-### Current implemented mode: Course Detail Preview
+Important files:
 
-This is the mode for:
+```txt
+src/app/courses/[slug]/page.tsx
+src/features/course/components/course-detail-preview-page.tsx
+src/features/course/components/course-detail-hero.tsx
+src/features/course/components/course-preview-player.tsx
+src/features/course/components/course-lesson-preview-list.tsx
+src/features/course/components/course-checkout-card.tsx
+src/features/course/hooks/use-course-detail.ts
+```
 
-1. Guest user entering from landing page.
-2. Logged-in student who has not enrolled/checked out the course yet.
+### Dynamic Route Important Note
 
-Behavior:
+Because this project uses `/courses` with **s**, dynamic route file must be:
 
-- Show course hero with thumbnail as background image and overlay.
-- Show course metadata: category, level, status, lesson count, rating, created date.
-- Show video player.
-- Only lessons with `is_preview = true` can be played.
-- Lessons with `is_preview = false` are locked.
-- Right sidebar contains checkout CTA.
-- If guest clicks checkout, redirect to login with redirect query.
-- If authenticated student clicks checkout, redirect to checkout page.
+```txt
+src/app/courses/[slug]/page.tsx
+```
 
-Checkout behavior:
+For Next.js version with async params:
 
-```ts
-if (!isAuthenticated) {
-  router.push(`/login?redirect=/checkout/${course.slug}`);
-} else {
-  router.push(`/checkout/${course.slug}`);
+```tsx
+import { CourseDetailPreviewPage } from "@/features/course/components/course-detail-preview-page";
+
+type CourseDetailPageProps = {
+  params: Promise<{
+    slug: string;
+  }>;
+};
+
+export default async function CourseDetailPage({ params }: CourseDetailPageProps) {
+  const { slug } = await params;
+
+  return <CourseDetailPreviewPage slug={slug} />;
 }
 ```
 
-### Future course detail modes
+If `slug` is undefined, the frontend will not call Laravel API. Network may show `?_rsc=...` internal Next.js response, not JSON API.
 
-There are 3 planned course detail modes:
+### Course Detail Hero
 
-#### 1. Detail Preview Mode
+Hero should use `thumbnail_url` as a background image with overlay.
 
-Current implemented mode.
-
-Use for guest or non-enrolled student.
-
-Rules:
-
-- Can view course detail.
-- Can only play lessons where `is_preview = true`.
-- Locked lessons show lock indicator.
-- Checkout card appears.
-
-#### 2. Detail Enrolled Student Mode
-
-Not implemented yet.
-
-Use for student who has enrolled or purchased the course.
-
-Rules:
-
-- Can view same course detail.
-- Can play all lessons.
-- No checkout CTA card.
-- Should probably show learning progress, continue lesson, mark lesson completed, etc.
-
-#### 3. Detail Instructor Mode
-
-Not implemented yet.
-
-Use for instructor who owns the course.
-
-Rules:
-
-- Can view course detail.
-- Can view course status.
-- Can edit course.
-- Should show mentor/instructor controls.
-
----
-
-## 17. Course Lesson Preview Rules
-
-Lesson object:
+Recommended fallback:
 
 ```ts
-export type CourseLesson = {
-  id: number;
-  title: string;
-  type: string;
-  content: string;
-  video_url: string | null;
-  is_preview: boolean;
-  position: number | null;
-  created_at: string;
+const thumbnailUrl =
+  course?.thumbnail_url && course.thumbnail_url.trim() !== ""
+    ? course.thumbnail_url
+    : "/images/image-not-available.png";
+```
+
+`CourseDetailHero` props:
+
+```ts
+type CourseDetailHeroProps = {
+  course: Course;
+  thumbnailUrl: string;
 };
 ```
 
-Preview page rules:
-
-```txt
-if lesson.is_preview === true:
-  lesson is clickable
-  play video_url if available
-
-if lesson.is_preview === false:
-  lesson is disabled/locked
-  show lock icon
-```
-
-If no preview lesson exists, hero/player should show thumbnail placeholder and message to choose available preview lesson.
-
 ---
 
-## 18. Blog Page
+## 17. Blog Page
 
 Route:
 
@@ -952,72 +910,83 @@ Route:
 /blog
 ```
 
-Blog source:
+Blog uses NewsAPI through internal Next.js API route.
+
+Important files:
 
 ```txt
-NewsAPI.org
-```
-
-The browser does not call NewsAPI directly. It calls internal Next.js route:
-
-```txt
-GET /api/news
-```
-
-Internal route:
-
-```txt
+src/app/blog/page.tsx
 src/app/api/news/route.ts
+src/features/blog/components/blog-card.tsx
+src/features/blog/components/blog-search-filter.tsx
+src/features/blog/hooks/use-blog-articles.ts
+src/features/blog/services/blog-service.ts
+src/features/blog/types/blog.type.ts
 ```
 
-Flow:
+### Blog API Flow
 
 ```txt
-BlogPage
+Browser /blog
 ↓
-useBlogArticles
+blogService.getArticles()
 ↓
-blogService.getArticles
+fetch('/api/news')
 ↓
-GET /api/news?q=&sortBy=&page=&pageSize=
+Next.js API route reads NEWS_API_KEY from .env
 ↓
-Next.js API route reads NEWS_API_KEY
+Request to NewsAPI
 ↓
-Request to NewsAPI /everything
+Response returned to frontend
 ```
 
-Blog feature folder:
+NewsAPI endpoint:
 
 ```txt
-src/features/blog/
-├── components/
-│   ├── blog-card.tsx
-│   └── blog-search-filter.tsx
-├── hooks/
-│   └── use-blog-articles.ts
-├── services/
-│   └── blog-service.ts
-└── types/
-    └── blog.type.ts
+GET https://newsapi.org/v2/everything
 ```
 
-Blog supports:
+Supported params:
 
-- Search query
-- Sort by publishedAt, popularity, relevancy
-- Loading state
-- Error state
-- Empty state
-- Pagination
-- Direct page input via Pagination `showPageInput`
+```txt
+q
+from
+sortBy
+page
+pageSize
+```
+
+Default params:
+
+```ts
+const DEFAULT_PARAMS = {
+  q: "education technology",
+  sortBy: "publishedAt",
+  page: 1,
+  pageSize: 10,
+};
+```
+
+Blog features:
+
+- Search articles.
+- Sort by `publishedAt`, `popularity`, or `relevancy`.
+- Pagination.
+- User can input page number directly.
+- Loading state.
+- Error state.
+- Empty state.
+- Blog card styling consistent with course card.
 
 Important image note:
 
-- Blog cards should use `<img>` instead of `next/image` because NewsAPI returns images from many different domains.
+- NewsAPI image domains are unpredictable.
+- `BlogCard` may use regular `<img>` instead of `next/image` to avoid remote domain errors.
+- If using `next/image`, every possible image host must be configured, which is impractical for NewsAPI.
 
 ---
 
-## 19. About Us Page
+## 18. About Us Page
 
 Route:
 
@@ -1025,7 +994,7 @@ Route:
 /about-us
 ```
 
-About Us sections:
+Sections:
 
 ```txt
 1. About Hero Section
@@ -1035,40 +1004,64 @@ About Us sections:
 5. About CTA Section
 ```
 
-Feature folder:
+Important files:
 
 ```txt
-src/features/about/
-├── components/
-│   ├── about-hero-section.tsx
-│   ├── mission-vision-section.tsx
-│   ├── why-eduka-section.tsx
-│   ├── values-section.tsx
-│   └── about-cta-section.tsx
-└── constants/
-    └── about-data.ts
+src/features/about/components/about-hero-section.tsx
+src/features/about/components/mission-vision-section.tsx
+src/features/about/components/why-eduka-section.tsx
+src/features/about/components/values-section.tsx
+src/features/about/components/about-cta-section.tsx
+src/features/about/constants/about-data.ts
+src/app/about-us/page.tsx
 ```
+
+Purpose:
+
+- Explain what Eduka is.
+- Explain mission and vision.
+- Explain learning values.
+- Encourage users to start learning or browse courses.
 
 ---
 
-## 20. Navbar
+## 19. Navbar
 
-File:
+Located at:
 
 ```txt
 src/components/common/navbar.tsx
 ```
 
-Navbar behavior:
+Features:
 
-- Sticky top.
-- Desktop: horizontal links.
-- Mobile/tablet: hamburger menu with smooth open/close animation.
-- Authenticated users see dashboard/users/logout.
-- Guests see login/register.
-- Active menu indicator uses `usePathname()`.
+- Desktop menu.
+- Mobile hamburger menu.
+- Smooth open/close animation.
+- Auth-aware menu.
+- Active route indicator.
 
-Active route logic:
+Main public links:
+
+```ts
+const publicLinks = [
+  { label: "Home", href: "/" },
+  { label: "Courses", href: "/courses" },
+  { label: "Blog", href: "/blog" },
+  { label: "About Us", href: "/about-us" },
+];
+```
+
+Auth links:
+
+```ts
+const authLinks = [
+  { label: "Users", href: "/users" },
+  { label: "Dashboard", href: "/dashboard" },
+];
+```
+
+Active route helper:
 
 ```ts
 const isActiveLink = (href: string) => {
@@ -1080,19 +1073,11 @@ const isActiveLink = (href: string) => {
 };
 ```
 
-This keeps menu active on detail routes:
-
-```txt
-/courses/flutter-course -> Courses active
-/blog/article          -> Blog active
-/about-us              -> About Us active
-```
-
 ---
 
-## 21. Footer
+## 20. Footer
 
-File:
+Located at:
 
 ```txt
 src/components/common/footer.tsx
@@ -1104,28 +1089,45 @@ Footer uses primary gradient background:
 from-[#0d22a8] via-[#101f8f] to-[#06115a]
 ```
 
-Footer sections:
+Footer columns:
 
 ```txt
-Eduka brand description
-Platform links
-Learning links
-Mentor links
-Copyright + privacy/terms
+Eduka
+Platform
+Learning
+Mentor
 ```
 
-Mentor section is now a normal footer column, not a CTA card.
+Platform links:
+
+```txt
+Home
+Courses
+Blog
+About Us
+```
+
+Learning links:
+
+```txt
+Daftar Student
+Login Student
+Dashboard Student
+Mulai Belajar
+```
 
 Mentor links:
 
 ```txt
 Register Mentor -> /register?role=instructor
-Login Mentor    -> /login
+Login Mentor -> /login
 Mentor Dashboard -> /dashboard
-Buat Course     -> /dashboard
+Buat Course -> /dashboard
 ```
 
-Future mentor route suggestions:
+Future enhancement:
+
+- Create dedicated mentor routes:
 
 ```txt
 /mentor/register
@@ -1136,357 +1138,378 @@ Future mentor route suggestions:
 
 ---
 
-## 22. Blog, Course, and Auth Routing Summary
+## 21. Styling System
 
-| Route | Access | Purpose |
-|---|---|---|
-| `/` | Public | Home landing page |
-| `/courses` | Public | Course catalog |
-| `/courses/[slug]` | Public / Auth-aware | Course detail preview |
-| `/blog` | Public | Blog listing from NewsAPI |
-| `/about-us` | Public | About Eduka page |
-| `/login` | GuestRoute | Login page |
-| `/register` | GuestRoute | Register page |
-| `/dashboard` | ProtectedRoute | User dashboard |
-| `/users/[id]` | ProtectedRoute | User detail |
-
----
-
-## 23. API Client
-
-File:
+Main design colors:
 
 ```txt
-src/lib/api.ts
+Primary: #0d22a8
+Secondary: #F25019
+Dark gradient: #0d22a8 -> #101f8f -> #06115a
+Background: white / gray-50
+Card: white, rounded-3xl, border-gray-200, shadow-sm/xl
 ```
 
-Expected behavior:
+Common UI patterns:
 
-- Axios instance reads `NEXT_PUBLIC_API_BASE_URL`.
-- Sets `Accept: application/json` and `Content-Type: application/json`.
-- Request interceptor attaches Bearer token from localStorage if available.
-
-Recommended:
-
-```ts
-import axios from "axios";
-
-import { STORAGE_KEYS } from "@/lib/constans";
-import { storage } from "@/lib/storage";
-
-export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-  headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-  },
-});
-
-api.interceptors.request.use((config) => {
-  const token = storage.getItem(STORAGE_KEYS.TOKEN);
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  return config;
-});
-```
+- Rounded cards: `rounded-3xl` or `rounded-[1.5rem]`.
+- Primary CTA button: orange `#F25019`.
+- Blue active state: `#0d22a8`.
+- White/soft-white text on gradient backgrounds.
+- Mobile-first responsive design.
 
 ---
 
-## 24. Backend API Endpoints Currently Used
+## 22. Business Rules Summary
 
-### Auth
+### Guest user
 
-| Method | Endpoint | Purpose |
-|---|---|---|
-| POST | `/auth/login` | Login |
-| POST | `/auth/register` | Register |
+Can:
 
-### Users
+- View Home.
+- View Courses.
+- Search/filter courses.
+- View Course Detail Preview.
+- Play lessons where `is_preview = true`.
+- View Blog.
+- View About Us.
+- Register/login.
 
-| Method | Endpoint | Purpose |
-|---|---|---|
-| GET | `/users?page=1&per_page=10` | List users |
-| GET | `/auth/user/{id}` | User detail |
+Cannot:
 
-### Courses
+- Access dashboard.
+- Access protected user pages.
+- Checkout without login.
+- Play locked lessons.
 
-| Method | Endpoint | Purpose |
-|---|---|---|
-| GET | `/courses?page=1&per_page=10` | Home popular courses |
-| GET | `/courses?category_id=&level=&search=&page=1&per_page=5&status=published` | Course catalog |
-| GET | `/courses/slug/{slug}` | Course detail by slug |
-| GET | `/courses?recommended={userId}&page=1&per_page=10&status=published` | Recommended courses, if backend supports `recommended` |
-| GET | `/courses?recomended={userId}&page=1&per_page=10&status=published` | Recommended courses, if backend uses typo `recomended` |
+### Student user
 
-### Categories
+Can:
 
-| Method | Endpoint | Purpose |
-|---|---|---|
-| GET | `/categories` | List course categories |
+- Login/register.
+- View dashboard.
+- View course catalog.
+- View course preview.
+- Checkout course if not enrolled.
+- Later access enrolled course detail mode.
 
-### Blog
+Future rules:
 
-| Method | Endpoint | Purpose |
-|---|---|---|
-| GET | `/api/news` | Internal Next.js proxy to NewsAPI |
+- If enrolled, student can play all lessons.
+- Checkout CTA hidden on enrolled detail page.
+
+### Instructor/Mentor user
+
+Current:
+
+- Can register using `role=instructor` flow if supported.
+- Footer has mentor links.
+
+Future:
+
+- Instructor detail mode shows owned course detail.
+- Instructor can see status course.
+- Instructor can edit course.
+- Instructor can create course.
 
 ---
 
-## 25. Business Rules Summary
+## 23. Course Detail Mode Roadmap
 
-### Authentication
+The project plans 3 course detail modes:
 
-- Guests can visit landing pages.
-- Logged-in users should not access login/register page again.
-- Protected dashboard/user pages require login.
-- Token and user are stored in localStorage.
+### 1. Preview Mode - implemented
 
-### Course catalog
+For guest or non-enrolled student.
 
-- Public catalog should show only published courses by default.
-- Search, level, category, and pagination are API-driven.
-- Category list comes from backend API.
-- Course cards should use backend thumbnail if available.
-- If no thumbnail is available, use `/images/image-not-available.png`.
+Rules:
 
-### Course detail preview
+- Preview lessons only.
+- Checkout card visible.
+- Locked lessons disabled.
 
-- Guest and non-enrolled student can view course detail.
-- Only preview lessons can be played.
-- Non-preview lessons are locked.
-- Checkout card appears.
-- Guest checkout redirects to login/register first.
-- Authenticated student checkout goes to checkout route.
+### 2. Enrolled Student Mode - not implemented yet
 
-### Enrolled student course detail, planned
+For student who already enrolled/purchased.
+
+Rules:
 
 - Can play all lessons.
 - No checkout card.
-- Should show progress and continue learning.
+- Show learning progress later.
 
-### Instructor course detail, planned
+### 3. Instructor Owner Mode - not implemented yet
 
-- Shows instructor-owned course detail.
-- Shows course status.
-- Has edit course button.
-- No student checkout CTA.
+For instructor who owns the course.
 
-### Mentor
+Rules:
 
-- Mentor/instructor registration currently points to `/register?role=instructor`.
-- Future mentor-specific routes may be created.
+- Show course status.
+- Show edit course button.
+- Could show course management actions.
 
 ---
 
-## 26. Known Issues and Fixes Already Discussed
+## 24. Known API Endpoints
 
-### Next.js route mismatch
-
-Problem:
+### Auth
 
 ```txt
-/course/[slug] 404
+POST /auth/login
+POST /auth/register
 ```
+
+### Users
+
+```txt
+GET /users?page=1&per_page=10
+GET /auth/user/{id}
+```
+
+### Courses
+
+```txt
+GET /courses?page=1&per_page=5&status=published
+GET /courses?level=intermediate&category_id=&search=&page=1&per_page=5&status=published
+GET /courses/slug/{slug}
+```
+
+### Categories
+
+```txt
+GET /categories
+```
+
+### Recommended Courses
+
+```txt
+GET /courses?recommended={user_id}&page=1&per_page=10&status=published
+```
+
+or if backend expects typo:
+
+```txt
+GET /courses?recomended={user_id}&page=1&per_page=10&status=published
+```
+
+### Blog
+
+Frontend route:
+
+```txt
+GET /api/news
+```
+
+Internal external request:
+
+```txt
+GET https://newsapi.org/v2/everything
+```
+
+---
+
+## 25. Known Issues and Fixes
+
+### Next.js route returned `_rsc` response
 
 Cause:
 
-Project uses `/courses` with `s`.
+- User inspected Next.js internal RSC request instead of API request.
+- If `slug` was undefined, `useCourseDetail` did not fetch Laravel API.
 
 Fix:
+
+- Ensure route is `src/app/courses/[slug]/page.tsx`.
+- Use async params if needed.
+- Pass `slug` to `CourseDetailPreviewPage`.
+
+### Laravel log not showing request
+
+Cause:
+
+- Request was still hitting Next.js route, not Laravel API.
+- Or `slug` was undefined and hook returned early.
+
+Fix:
+
+- Check Network tab for request to backend base URL.
+- Add console log in `useCourseDetail`.
+
+### `next/image` invalid hostname
+
+Cause:
+
+- Backend image host not configured in `next.config.ts`.
+
+Fix:
+
+- Add backend storage host to `remotePatterns`.
+
+### `upstream image resolved to private ip`
+
+Cause:
+
+- Next Image optimizer blocked `127.0.0.1`.
+
+Fix:
+
+- Use `dangerouslyAllowLocalIP` only in development.
+- Or add `unoptimized` to image component for local dev.
+
+### NewsAPI images causing hostname errors
+
+Cause:
+
+- NewsAPI returns images from many unpredictable domains.
+
+Fix:
+
+- Use plain `<img>` in `BlogCard`.
+
+### Response thumbnail has escaped slash
+
+Example:
+
+```json
+"thumbnail_url": "http:\/\/127.0.0.1:8000\/storage\/..."
+```
+
+This is normal JSON escaping. Axios parses it into:
 
 ```txt
-src/app/courses/[slug]/page.tsx
-href={`/courses/${course.slug}`}
+http://127.0.0.1:8000/storage/...
 ```
 
-### Slug undefined in App Router
-
-Problem:
-
-RSC response showed:
-
-```txt
-{"slug":"$undefined"}
-```
-
-Fix:
-
-Use async params:
-
-```ts
-type Props = {
-  params: Promise<{ slug: string }>;
-};
-
-export default async function Page({ params }: Props) {
-  const { slug } = await params;
-  return <CourseDetailPreviewPage slug={slug} />;
-}
-```
-
-### Next image local backend error
-
-Problem:
-
-```txt
-Invalid src prop hostname "127.0.0.1" is not configured
-```
-
-Fix:
-
-Add `remotePatterns` for local backend in `next.config.ts`.
-
-### Next image private IP error
-
-Problem:
-
-```txt
-upstream image resolved to private ip ["127.0.0.1"]
-```
-
-Fix for development:
-
-```ts
-dangerouslyAllowLocalIP: process.env.NODE_ENV === "development"
-```
-
-### Blog image hosts dynamic
-
-Problem:
-
-NewsAPI returns images from unpredictable domains.
-
-Fix:
-
-Use `<img>` in blog card instead of `next/image`.
-
-### Axios error message
-
-Problem:
-
-UI showed `Request failed with status code 401` instead of backend message.
-
-Fix:
-
-Catch `AxiosError` and throw `error.response?.data.message`.
+The issue is not escaped slash, but image domain configuration.
 
 ---
 
-## 27. Current Completed Checklist
+## 26. Commands
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run development server:
+
+```bash
+npm run dev
+```
+
+Run lint:
+
+```bash
+npm run lint
+```
+
+Build:
+
+```bash
+npm run build
+```
+
+Restart required after changing:
 
 ```txt
-[x] Project setup with Next.js, React, TypeScript, Tailwind
-[x] Axios API client
-[x] Environment variables
+.env.local
+next.config.ts
+```
+
+---
+
+## 27. Suggested Next Development Steps
+
+After landing page and preview course detail:
+
+1. Implement checkout page.
+2. Implement enrollment API flow.
+3. Implement enrolled student course detail mode.
+4. Implement lesson progress tracking.
+5. Implement instructor dashboard.
+6. Implement instructor course create/edit pages.
+7. Implement mentor-specific register/login handling.
+8. Add toast notifications.
+9. Add skeleton loading UI.
+10. Add SEO metadata for landing pages.
+11. Add proper error boundaries.
+12. Add deployment config for staging and production.
+
+---
+
+## 28. Quick Prompt for New AI Chat
+
+Use this prompt when continuing in a new chat:
+
+```txt
+I am building an LMS frontend called Eduka using Next.js App Router, React, TypeScript, Tailwind CSS, Axios, React Hook Form, Zod, and Lucide React.
+
+The project uses a feature-based modular structure:
+- src/components/ui for Button, Input, Card, Loading, Pagination, CourseCard
+- src/components/common for Navbar, Footer, ProtectedRoute, GuestRoute
+- src/features/auth for login/register/auth context/useAuth
+- src/features/users for user list/detail
+- src/features/home for landing home sections and popular courses
+- src/features/course for course catalog, filters, categories, recommended courses, and course detail preview
+- src/features/blog for NewsAPI blog page
+- src/features/about for About Us page
+- src/lib for api, storage, constants
+
+Routes:
+- / Home
+- /courses Course catalog
+- /courses/[slug] Course detail preview
+- /blog Blog page
+- /about-us About page
+- /login Guest login
+- /register Guest register
+- /dashboard Protected dashboard
+- /users/[id] Protected user detail
+
+The backend base URL is stored in NEXT_PUBLIC_API_BASE_URL. Local is http://127.0.0.1:8000/api/v1 and staging is http://38.47.180.195/student02/api/v1.
+
+Course page uses CourseProvider and useCourse. It fetches:
+- GET /courses with params category_id, level, search, page, per_page, status=published
+- GET /categories
+- GET /courses?recommended={user_id} or recomended={user_id} for recommended courses
+
+Course detail preview route is /courses/[slug] and fetches GET /courses/slug/{slug}. Preview mode allows guest/non-enrolled students to play only lessons where is_preview=true. Locked lessons cannot be played. Checkout CTA is shown. Guest checkout redirects to login/register, logged-in student redirects to checkout.
+
+Landing page is done: Home, Courses, Blog, About Us. I want to continue from this structure and business rules.
+```
+
+---
+
+## 29. Current Completion Checklist
+
+```txt
+[x] Next.js project setup
+[x] Clean modular feature-based structure
 [x] Reusable UI components
-[x] Auth feature: login, register, logout
+[x] Auth register/login/logout
 [x] AuthContext and useAuth
 [x] ProtectedRoute and GuestRoute
 [x] Dashboard page
-[x] Users list and detail
-[x] Pagination component with page input
-[x] Responsive navbar with active indicator
-[x] Informative footer with mentor links
-[x] Home landing page slicing
-[x] Course page slicing
-[x] Course page API integration for list courses
-[x] Course category API integration
-[x] Course detail preview page by slug
-[x] Course preview lesson rules
-[x] Course checkout CTA card preparation
-[x] Blog page API integration via NewsAPI proxy
-[x] Blog search/sort/pagination UI
-[x] About Us page slicing
-[x] Responsive design for landing pages
+[x] User list and pagination
+[x] User detail
+[x] Responsive Navbar with active indicator
+[x] Informative Footer with mentor links
+[x] Home landing page
+[x] Home course preview fetch from backend
+[x] Courses page
+[x] Course search and filters
+[x] Course category tabs/sidebar
+[x] Course list fetch from backend
+[x] Course pagination
+[x] Recommended courses horizontal scroll
+[x] Course detail preview by slug
+[x] Preview video player for is_preview lessons
+[x] Locked lessons for non-preview
+[x] Checkout CTA card for preview detail
+[x] Blog page using NewsAPI through internal API route
+[x] Blog search, sort, cards, pagination with page input
+[x] About Us page
+[x] Local and staging API base URL support
+[x] next/image config for local/staging backend thumbnails
 ```
-
----
-
-## 28. Suggested Next Development Priorities
-
-1. Implement checkout page flow.
-2. Implement enrollment API integration.
-3. Detect whether student is enrolled in a course.
-4. Switch course detail mode based on enrollment status.
-5. Build enrolled student course detail mode.
-6. Build lesson progress feature.
-7. Build instructor course detail mode.
-8. Build instructor course management pages.
-9. Improve role-based routing for student/instructor.
-10. Add toast notifications for success/error.
-11. Add loading skeletons.
-12. Add better empty states.
-13. Add real blog detail page if needed.
-14. Add mentor-specific register/login routes if required.
-15. Finalize README and screenshots.
-
----
-
-## 29. Prompt to Continue in a New AI Chat
-
-Use this summary when continuing in a new AI chat:
-
-```txt
-Saya sedang membangun frontend LMS bernama Eduka menggunakan Next.js App Router, React, TypeScript, Tailwind CSS, Axios, React Hook Form, Zod, dan Lucide React.
-
-Project memakai struktur feature-based clean modular:
-- src/components/ui untuk Button, Input, Card, Loading, Pagination, CourseCard
-- src/components/common untuk Navbar, Footer, ProtectedRoute, GuestRoute
-- src/features/auth untuk login/register/auth context
-- src/features/users untuk list user dan detail user
-- src/features/home untuk landing home
-- src/features/course untuk course catalog, category, recommended course, dan detail course preview
-- src/features/blog untuk blog dari NewsAPI
-- src/features/about untuk about us page
-- src/lib untuk api, constants/constans, dan storage
-
-Landing page sudah selesai:
-- / Home
-- /courses Course Catalog
-- /courses/[slug] Course Detail Preview
-- /blog Blog Page
-- /about-us About Us
-
-Course catalog sudah fetch API:
-GET /courses?category_id=&level=&search=&page=1&per_page=5&status=published
-GET /categories
-
-Course detail sudah fetch API:
-GET /courses/slug/{slug}
-
-Course detail preview business rules:
-- guest/non-enrolled student bisa melihat detail course
-- hanya lesson is_preview=true yang bisa diputar
-- lesson lain locked
-- sidebar checkout tampil
-- guest checkout redirect ke login dengan redirect query
-- student login checkout ke /checkout/{slug}
-
-Auth sudah selesai:
-- POST /auth/login
-- POST /auth/register
-- token dan user disimpan di localStorage
-- AuthContext + useAuth
-- ProtectedRoute dan GuestRoute
-
-Blog sudah selesai:
-- memakai NewsAPI via internal route /api/news
-- search, sort, pagination dengan input page
-
-Saya ingin melanjutkan dari state ini dengan tetap mengikuti struktur clean modular, hooks, context, services, dan reusable components.
-```
-
----
-
-## 30. Final Notes
-
-This frontend is no longer only a simple React assignment. It has evolved into a modular LMS frontend foundation with landing pages, authentication, catalog discovery, course preview, and API integration. Continue development by preserving the current separation of concerns:
-
-```txt
-UI component -> hook/context -> service -> API
-```
-
-Avoid placing API calls directly inside UI components unless it is a temporary experiment. Keep business logic in hooks/context and request logic in services.

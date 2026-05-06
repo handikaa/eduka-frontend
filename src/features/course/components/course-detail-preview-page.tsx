@@ -11,6 +11,7 @@ import { CourseLessonPreviewList } from "@/features/course/components/course-les
 import { CoursePreviewPlayer } from "@/features/course/components/course-preview-player";
 import { useCourseDetail } from "@/features/course/hooks/use-course-detail";
 import { CourseLesson } from "@/features/course/types/course.type";
+import { CourseReviewsSection } from "@/features/course/components/course-reviews-section";
 
 type CourseDetailPreviewPageProps = {
   slug: string;
@@ -80,48 +81,53 @@ export function CourseDetailPreviewPage({ slug }: CourseDetailPreviewPageProps) 
 <CourseDetailHero course={course} thumbnailUrl={thumbnailUrl} />
 
       <section className="px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1fr_360px]">
-          <div className="space-y-8">
-            <CoursePreviewPlayer
-              selectedLesson={activeLesson}
-              thumbnailUrl={thumbnailUrl}
-            />
+  <div className="mx-auto grid max-w-7xl items-start gap-8 lg:grid-cols-[1fr_360px]">
+    <div className="space-y-8">
+      <CoursePreviewPlayer
+        selectedLesson={activeLesson}
+        thumbnailUrl={thumbnailUrl}
+      />
 
-            <CourseLessonPreviewList
-              lessons={course.lessons}
-              selectedLessonId={activeLesson?.id}
-              onSelectPreviewLesson={setSelectedLesson}
-            />
+      <CourseLessonPreviewList
+        lessons={course.lessons}
+        selectedLessonId={activeLesson?.id}
+        onSelectPreviewLesson={setSelectedLesson}
+      />
 
-            <section className="rounded-[2rem] border border-gray-200 bg-white p-6 shadow-sm">
-              <p className="text-sm font-bold uppercase tracking-wide text-[#F25019]">
-                About This Course
-              </p>
+      <section className="rounded-[2rem] border border-gray-200 bg-white p-6 shadow-sm">
+        <p className="text-sm font-bold uppercase tracking-wide text-[#F25019]">
+          About This Course
+        </p>
 
-              <h2 className="mt-2 text-2xl font-extrabold text-gray-950">
-                Deskripsi Course
-              </h2>
+        <h2 className="mt-2 text-2xl font-extrabold text-gray-950">
+          Deskripsi Course
+        </h2>
 
-              <p className="mt-4 leading-7 text-gray-600">
-                {course.description}
-              </p>
+        <p className="mt-4 leading-7 text-gray-600">
+          {course.description}
+        </p>
 
-              <div className="mt-6 flex flex-wrap gap-3">
-                {course.categories.map((category) => (
-                  <span
-                    key={category.id}
-                    className="rounded-full bg-[#0d22a8]/10 px-4 py-2 text-sm font-bold text-[#0d22a8]"
-                  >
-                    {category.name}
-                  </span>
-                ))}
-              </div>
-            </section>
-          </div>
-
-          <CourseCheckoutCard course={course} />
+        <div className="mt-6 flex flex-wrap gap-3">
+          {course.categories.map((category) => (
+            <span
+              key={category.id}
+              className="rounded-full bg-[#0d22a8]/10 px-4 py-2 text-sm font-bold text-[#0d22a8]"
+            >
+              {category.name}
+            </span>
+          ))}
         </div>
       </section>
+        <CourseReviewsSection
+            slug={course.slug}
+            ratingAvg={course.rating_avg}
+            ratingCount={course.rating_count}
+          />
+    </div>
+
+    <CourseCheckoutCard course={course} />
+  </div>
+</section>
     </main>
   );
 }
