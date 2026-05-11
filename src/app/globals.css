@@ -8,6 +8,20 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  --color-primary: #0d22c2;
+  --color-primary-medium: #101f8f;
+  --color-primary-dark: #06115a;
+  --color-primary-soft: #eef2ff;
+
+  --color-secondary: #f25019;
+  --color-secondary-dark: #c63d10;
+  --color-secondary-soft: #fff1eb;
+
+  --color-card: #ffffff;
+  --color-muted: #6b7280;
+  --color-surface: #f9fafb;
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

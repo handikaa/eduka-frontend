@@ -24,9 +24,9 @@ export function CourseDetailPreviewPage({ slug }: CourseDetailPreviewPageProps) 
   );
 
   const thumbnailUrl =
-  course?.thumbnail_url && course.thumbnail_url.trim() !== ""
-    ? course.thumbnail_url
-    : "/images/image-not-available.png";
+    course?.thumbnail_url && course.thumbnail_url.trim() !== ""
+      ? course.thumbnail_url
+      : "/images/image-not-available.png";
 
   const defaultPreviewLesson = useMemo(() => {
     return course?.lessons.find((lesson) => lesson.is_preview) || null;
@@ -47,7 +47,7 @@ export function CourseDetailPreviewPage({ slug }: CourseDetailPreviewPageProps) 
   if (errorMessage) {
     return (
       <main className="min-h-[calc(100vh-72px)] bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-2xl rounded-[2rem] border border-red-200 bg-red-50 p-8 text-center">
+        <div className="mx-auto max-w-2xl rounded-4xl border border-red-200 bg-red-50 p-8 text-center">
           <p className="text-sm font-semibold text-red-700">{errorMessage}</p>
 
           <Button
@@ -67,7 +67,7 @@ export function CourseDetailPreviewPage({ slug }: CourseDetailPreviewPageProps) 
   if (!course) {
     return (
       <main className="min-h-[calc(100vh-72px)] bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-2xl rounded-[2rem] border border-gray-200 bg-white p-8 text-center">
+        <div className="mx-auto max-w-2xl rounded-4xl border border-gray-200 bg-white p-8 text-center">
           <p className="text-lg font-bold text-gray-950">
             Course tidak ditemukan
           </p>
@@ -78,56 +78,56 @@ export function CourseDetailPreviewPage({ slug }: CourseDetailPreviewPageProps) 
 
   return (
     <main className="bg-gray-50">
-<CourseDetailHero course={course} thumbnailUrl={thumbnailUrl} />
+      <CourseDetailHero course={course} thumbnailUrl={thumbnailUrl} />
 
       <section className="px-4 py-12 sm:px-6 lg:px-8">
-  <div className="mx-auto grid max-w-7xl items-start gap-8 lg:grid-cols-[1fr_360px]">
-    <div className="space-y-8">
-      <CoursePreviewPlayer
-        selectedLesson={activeLesson}
-        thumbnailUrl={thumbnailUrl}
-      />
+        <div className="mx-auto grid max-w-7xl items-start gap-8 lg:grid-cols-[1fr_360px]">
+          <div className="space-y-8">
+            <CoursePreviewPlayer
+              selectedLesson={activeLesson}
+              thumbnailUrl={thumbnailUrl}
+            />
 
-      <CourseLessonPreviewList
-        lessons={course.lessons}
-        selectedLessonId={activeLesson?.id}
-        onSelectPreviewLesson={setSelectedLesson}
-      />
+            <CourseLessonPreviewList
+              lessons={course.lessons}
+              selectedLessonId={activeLesson?.id}
+              onSelectPreviewLesson={setSelectedLesson}
+            />
 
-      <section className="rounded-[2rem] border border-gray-200 bg-white p-6 shadow-sm">
-        <p className="text-sm font-bold uppercase tracking-wide text-[#F25019]">
-          About This Course
-        </p>
+            <section className="rounded-4xl border border-gray-200 bg-white p-6 shadow-sm">
+              <p className="text-sm font-bold uppercase tracking-wide text-secondary">
+                About This Course
+              </p>
 
-        <h2 className="mt-2 text-2xl font-extrabold text-gray-950">
-          Deskripsi Course
-        </h2>
+              <h2 className="mt-2 text-2xl font-extrabold text-gray-950">
+                Deskripsi Course
+              </h2>
 
-        <p className="mt-4 leading-7 text-gray-600">
-          {course.description}
-        </p>
+              <p className="mt-4 leading-7 text-gray-600">
+                {course.description}
+              </p>
 
-        <div className="mt-6 flex flex-wrap gap-3">
-          {course.categories.map((category) => (
-            <span
-              key={category.id}
-              className="rounded-full bg-[#0d22a8]/10 px-4 py-2 text-sm font-bold text-[#0d22a8]"
-            >
-              {category.name}
-            </span>
-          ))}
+              <div className="mt-6 flex flex-wrap gap-3">
+                {course.categories.map((category) => (
+                  <span
+                    key={category.id}
+                    className="rounded-full bg-primary/10 px-4 py-2 text-sm font-bold text-primary"
+                  >
+                    {category.name}
+                  </span>
+                ))}
+              </div>
+            </section>
+            <CourseReviewsSection
+              slug={course.slug}
+              ratingAvg={course.rating_avg}
+              ratingCount={course.rating_count}
+            />
+          </div>
+
+          <CourseCheckoutCard course={course} />
         </div>
       </section>
-        <CourseReviewsSection
-            slug={course.slug}
-            ratingAvg={course.rating_avg}
-            ratingCount={course.rating_count}
-          />
-    </div>
-
-    <CourseCheckoutCard course={course} />
-  </div>
-</section>
     </main>
   );
 }

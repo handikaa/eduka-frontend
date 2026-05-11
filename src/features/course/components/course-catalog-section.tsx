@@ -12,7 +12,7 @@ export function CourseCatalogSection() {
     >
       <div className="mx-auto max-w-7xl">
         <div className="mb-8">
-          <p className="text-sm font-bold uppercase tracking-wide text-[#F25019]">
+          <p className="text-sm font-bold uppercase tracking-wide text-secondary">
             Course Catalog
           </p>
 

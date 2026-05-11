@@ -18,7 +18,7 @@ export function CourseLessonPreviewList({
   return (
     <section className="rounded-[2rem] border border-gray-200 bg-white p-6 shadow-sm">
       <div className="mb-6">
-        <p className="text-sm font-bold uppercase tracking-wide text-[#F25019]">
+        <p className="text-sm font-bold uppercase tracking-wide text-secondary">
           Course Lessons
         </p>
         <h2 className="mt-2 text-2xl font-extrabold text-gray-950">
@@ -40,23 +40,20 @@ export function CourseLessonPreviewList({
               type="button"
               disabled={!isPreview}
               onClick={() => onSelectPreviewLesson(lesson)}
-              className={`w-full rounded-2xl border p-4 text-left transition-all ${
-                isSelected
-                  ? "border-[#0d22a8] bg-[#0d22a8]/5"
-                  : "border-gray-200 bg-white"
-              } ${
-                isPreview
-                  ? "hover:border-[#0d22a8] hover:bg-[#0d22a8]/5"
+              className={`w-full rounded-2xl border p-4 text-left transition-all ${isSelected
+                ? "border-primary bg-primary/5"
+                : "border-gray-200 bg-white"
+                } ${isPreview
+                  ? "hover:border-primary hover:bg-primary/5"
                   : "cursor-not-allowed opacity-70"
-              }`}
+                }`}
             >
               <div className="flex items-start gap-4">
                 <div
-                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
-                    isPreview
-                      ? "bg-[#0d22a8]/10 text-[#0d22a8]"
-                      : "bg-gray-100 text-gray-400"
-                  }`}
+                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${isPreview
+                    ? "bg-primary/10 text-primary"
+                    : "bg-gray-100 text-gray-400"
+                    }`}
                 >
                   {isPreview ? (
                     <PlayCircle className="h-5 w-5" />
@@ -72,7 +69,7 @@ export function CourseLessonPreviewList({
                     </p>
 
                     {isPreview ? (
-                      <span className="rounded-full bg-[#F25019]/10 px-3 py-1 text-xs font-bold text-[#F25019]">
+                      <span className="rounded-full bg-secondary/10 px-3 py-1 text-xs font-bold text-secondary">
                         Preview
                       </span>
                     ) : (

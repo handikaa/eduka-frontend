@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 export function CTASection() {
   return (
     <section className="bg-white px-4 py-16 sm:px-6 lg:px-8">
-      <div className="realtive mx-auto max-w-7xl overflow-hidden rounded-4xl bg-linear-to-br from-[#0d22a8] to-[#06115a] px-6 py-12 text-center shadow-2xl sm:px-10 lg:py-16">
-        <div className="absolute -left-20 top-24 h-64 w-64 rounded-full bg-[#F25019]/20 blur-3xl" />
+      <div className="realtive mx-auto max-w-7xl overflow-hidden rounded-4xl bg-linear-to-br from-primary to-primary-dark px-6 py-12 text-center shadow-2xl sm:px-10 lg:py-16">
+        <div className="absolute -left-20 top-24 h-64 w-64 rounded-full bg-secondary/20 blur-3xl" />
         <div className="absolute bottom-20 -right-20 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
         <p className="text-sm font-bold uppercase tracking-wide ">
           Start Learning Today
@@ -24,19 +24,19 @@ export function CTASection() {
 
         <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
           <Link href="/register">
-         <Button 
-  variant="primary"
-  className="w-full rounded-full border-none px-8 py-3 hover:border-transparent sm:w-auto"
->
-  Daftar Sekarang
-  <ArrowUpRight className="ml-2 h-4 w-4" />
-</Button>
+            <Button
+              variant="primary"
+              className="w-full rounded-full border-none px-8 py-3 hover:border-transparent sm:w-auto"
+            >
+              Daftar Sekarang
+              <ArrowUpRight className="ml-2 h-4 w-4" />
+            </Button>
           </Link>
 
           <Link href="/courses">
             <Button
               variant="outline"
-              className="w-full rounded-full border-noneÍ bg-white text-[#0d22a8] px-8 py-3 text-base font-bold hover:[#F25019] hover:text-white sm:w-auto"
+              className="w-full rounded-full border-noneÍ bg-white text-primary px-8 py-3 text-base font-bold hover:secondary hover:text-white sm:w-auto"
             >
               Lihat Course
             </Button>

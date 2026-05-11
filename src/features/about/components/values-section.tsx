@@ -6,7 +6,7 @@ export function ValuesSection() {
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
           <div>
-            <p className="text-sm font-bold uppercase tracking-wide text-[#F25019]">
+            <p className="text-sm font-bold uppercase tracking-wide text-secondary">
               Our Values
             </p>
 
@@ -30,7 +30,7 @@ export function ValuesSection() {
                   key={item.title}
                   className="flex gap-4 rounded-3xl border border-gray-200 bg-white p-6 shadow-sm"
                 >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#F25019]/10 text-[#F25019]">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-secondary/10 text-secondary">
                     <Icon className="h-6 w-6" />
                   </div>
 

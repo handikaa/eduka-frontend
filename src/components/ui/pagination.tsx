@@ -80,7 +80,7 @@ export function Pagination({
                 max={totalPages}
                 value={pageInput}
                 onChange={(event) => setPageInput(event.target.value)}
-                className="h-10 w-full min-w-0 rounded-full border border-gray-200 bg-white px-3 text-center text-sm text-gray-900 outline-none transition-colors focus:border-[#0d22a8] focus:ring-2 focus:ring-[#0d22a8]/10 sm:w-24"
+                className="h-10 w-full min-w-0 rounded-full border border-gray-200 bg-white px-3 text-center text-sm text-gray-900 outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/10 sm:w-24"
                 placeholder="Page"
               />
 

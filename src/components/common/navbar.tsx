@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, UserCircle, LayoutDashboard, Settings, LogOut } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -15,15 +15,28 @@ export function Navbar() {
 
   const { user, isAuthenticated, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  const dashboardHref =
+    user?.role === "instructor" ? "/dashboard/instructor" : "/dashboard/student";
+
+  const accountSettingsHref =
+    user?.role === "instructor"
+      ? "/account/instructor"
+      : "/account/student";
+
+  const loginHref = "/login/student";
 
   const handleLogout = () => {
     logout();
     setIsMenuOpen(false);
-    router.replace("/login");
+    setIsProfileOpen(false);
+    router.replace(loginHref);
   };
 
   const handleNavigate = (path: string) => {
     setIsMenuOpen(false);
+    setIsProfileOpen(false);
     router.push(path);
   };
 
@@ -38,11 +51,6 @@ export function Navbar() {
     { label: "About Us", href: "/about-us" },
   ];
 
-  const authLinks = [
-    { label: "Users", href: "/users" },
-    { label: "Dashboard", href: "/dashboard" },
-  ];
-
   const isActiveLink = (href: string) => {
     if (href === "/") {
       return pathname === "/";
@@ -54,19 +62,17 @@ export function Navbar() {
   const getDesktopLinkClassName = (href: string) => {
     const isActive = isActiveLink(href);
 
-    return `relative font-semibold transition-colors duration-200 ${
-      isActive ? "text-[#0d22a8]" : "text-gray-700 hover:text-[#0d22a8]"
-    }`;
+    return `relative font-semibold transition-colors duration-200 ${isActive ? "text-primary" : "text-gray-700 hover:text-primary"
+      }`;
   };
 
   const getMobileLinkClassName = (href: string) => {
     const isActive = isActiveLink(href);
 
-    return `rounded-xl px-3 py-2 font-semibold transition-colors duration-200 ${
-      isActive
-        ? "bg-[#0d22a8] text-white"
-        : "text-gray-700 hover:bg-gray-50 hover:text-[#0d22a8]"
-    }`;
+    return `rounded-xl px-3 py-2 font-semibold transition-colors duration-200 ${isActive
+        ? "bg-primary text-white"
+        : "text-gray-700 hover:bg-gray-50 hover:text-primary"
+      }`;
   };
 
   return (
@@ -98,54 +104,77 @@ export function Navbar() {
                   {item.label}
 
                   {isActive && (
-                    <span className="absolute -bottom-2 left-1/2 h-1 w-6 -translate-x-1/2 rounded-full bg-[#F25019]" />
+                    <span className="absolute -bottom-2 left-1/2 h-1 w-6 -translate-x-1/2 rounded-full bg-secondary" />
                   )}
                 </Link>
               );
             })}
 
             {isAuthenticated ? (
-              <>
-                {authLinks.map((item) => {
-                  const isActive = isActiveLink(item.href);
-
-                  return (
-                    <Link
-                      key={item.label}
-                      href={item.href}
-                      className={getDesktopLinkClassName(item.href)}
-                    >
-                      {item.label}
-
-                      {isActive && (
-                        <span className="absolute -bottom-2 left-1/2 h-1 w-6 -translate-x-1/2 rounded-full bg-[#F25019]" />
-                      )}
-                    </Link>
-                  );
-                })}
-
-                <span className="max-w-40 truncate text-gray-500">
-                  {user?.name}
-                </span>
-
-                <Button type="button" variant="outline" onClick={handleLogout}>
-                  Logout
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button type="button" onClick={() => handleNavigate("/login")}>
-                  Login
-                </Button>
-{/* 
-                <Button
+              <div
+                className="relative"
+                onMouseEnter={() => setIsProfileOpen(true)}
+                onMouseLeave={() => setIsProfileOpen(false)}
+              >
+                <button
                   type="button"
-                  variant="outline"
-                  onClick={() => handleNavigate("/register")}
+                  onClick={() => setIsProfileOpen((prev) => !prev)}
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-primary shadow-sm transition-all duration-200 hover:border-secondary hover:bg-secondary hover:text-white"
+                  aria-label="Open profile menu"
+                  aria-expanded={isProfileOpen}
                 >
-                  Register
-                </Button> */}
-              </>
+                  <UserCircle className="h-7 w-7" />
+                </button>
+
+                <div
+                  className={`absolute right-0 top-14 w-64 overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-xl transition-all duration-200 ${isProfileOpen
+                      ? "visible translate-y-0 opacity-100"
+                      : "invisible -translate-y-2 opacity-0"
+                    }`}
+                >
+                  <div className="border-b border-gray-100 px-4 py-3">
+                    <p className="text-sm font-bold text-gray-900">
+                      {user?.role === "instructor" ? "Instructor" : "Student"}
+                    </p>
+                    <p className="mt-1 truncate text-xs text-gray-500">
+                      {user?.email}
+                    </p>
+                  </div>
+
+                  <div className="p-2">
+                    <button
+                      type="button"
+                      onClick={() => handleNavigate(dashboardHref)}
+                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary"
+                    >
+                      <LayoutDashboard className="h-4 w-4" />
+                      Dashboard
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleNavigate(accountSettingsHref)}
+                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary"
+                    >
+                      <Settings className="h-4 w-4" />
+                      Pengaturan Akun
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm font-semibold text-red-600 transition-colors hover:bg-red-50"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <Button type="button" onClick={() => handleNavigate("/login/student")}>
+                Login
+              </Button>
             )}
           </div>
 
@@ -158,34 +187,23 @@ export function Navbar() {
             aria-expanded={isMenuOpen}
           >
             <span
-              className={`transition-transform duration-300 ease-in-out ${
-                isMenuOpen ? "rotate-180" : "rotate-0"
-              }`}
+              className={`transition-transform duration-300 ease-in-out ${isMenuOpen ? "rotate-180" : "rotate-0"
+                }`}
             >
-              {isMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </span>
           </button>
         </div>
 
         {/* Mobile Menu */}
         <div
-          className={`grid transition-all duration-300 ease-in-out lg:hidden ${
-            isMenuOpen
-              ? "grid-rows-[1fr] opacity-100"
-              : "grid-rows-[0fr] opacity-0"
-          }`}
+          className={`grid transition-all duration-300 ease-in-out lg:hidden ${isMenuOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+            }`}
         >
           <div className="overflow-hidden">
             <div
-              className={`mt-4 rounded-2xl bg-white p-4 shadow-lg transition-all duration-300 ease-in-out ${
-                isMenuOpen
-                  ? "translate-y-0 scale-100"
-                  : "-translate-y-3 scale-95"
-              }`}
+              className={`mt-4 rounded-2xl bg-white p-4 shadow-lg transition-all duration-300 ease-in-out ${isMenuOpen ? "translate-y-0 scale-100" : "-translate-y-3 scale-95"
+                }`}
             >
               <div className="flex flex-col gap-2 text-sm">
                 {publicLinks.map((item) => (
@@ -201,20 +219,40 @@ export function Navbar() {
 
                 {isAuthenticated ? (
                   <>
-                    {authLinks.map((item) => (
-                      <Link
-                        key={item.label}
-                        href={item.href}
-                        onClick={closeMenu}
-                        className={getMobileLinkClassName(item.href)}
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
+                    <div className="mt-2 rounded-2xl border border-gray-100 bg-gray-50 px-3 py-3">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
+                          <UserCircle className="h-7 w-7" />
+                        </div>
 
-                    <div className="rounded-xl px-3 py-2 text-sm text-gray-500">
-                      {user?.name}
+                        <div className="min-w-0">
+                          <p className="text-sm font-bold capitalize text-gray-900">
+                            {user?.role}
+                          </p>
+                          <p className="truncate text-xs text-gray-500">
+                            {user?.email}
+                          </p>
+                        </div>
+                      </div>
                     </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleNavigate(dashboardHref)}
+                      className="flex items-center gap-3 rounded-xl px-3 py-2 font-semibold text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary"
+                    >
+                      <LayoutDashboard className="h-4 w-4" />
+                      Dashboard
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleNavigate(accountSettingsHref)}
+                      className="flex items-center gap-3 rounded-xl px-3 py-2 font-semibold text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary"
+                    >
+                      <Settings className="h-4 w-4" />
+                      Pengaturan Akun
+                    </button>
 
                     <Button
                       type="button"
@@ -230,18 +268,18 @@ export function Navbar() {
                     <Button
                       type="button"
                       className="w-full"
-                      onClick={() => handleNavigate("/login")}
+                      onClick={() => handleNavigate("/login/student")}
                     >
-                      Login
+                      Login Student
                     </Button>
 
                     <Button
                       type="button"
                       variant="outline"
                       className="w-full"
-                      onClick={() => handleNavigate("/register")}
+                      onClick={() => handleNavigate("/login/instructor")}
                     >
-                      Register
+                      Login Instructor
                     </Button>
                   </div>
                 )}

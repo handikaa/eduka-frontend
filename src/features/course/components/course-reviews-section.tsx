@@ -30,11 +30,10 @@ function RatingStars({ rating }: { rating: number }) {
         return (
           <Star
             key={index}
-            className={`h-4 w-4 ${
-              isActive
-                ? "fill-[#F25019] text-[#F25019]"
-                : "fill-gray-200 text-gray-200"
-            }`}
+            className={`h-4 w-4 ${isActive
+              ? "fill-secondary text-secondary"
+              : "fill-gray-200 text-gray-200"
+              }`}
           />
         );
       })}
@@ -61,7 +60,7 @@ export function CourseReviewsSection({
     <section className="rounded-[2rem] border border-gray-200 bg-white p-6 shadow-sm">
       <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
         <div>
-          <p className="text-sm font-bold uppercase tracking-wide text-[#F25019]">
+          <p className="text-sm font-bold uppercase tracking-wide text-secondary">
             Course Reviews
           </p>
 
@@ -74,8 +73,8 @@ export function CourseReviewsSection({
           </p>
         </div>
 
-        <div className="rounded-2xl bg-[#0d22a8]/10 px-5 py-4 text-left sm:text-right">
-          <p className="text-3xl font-extrabold text-[#0d22a8]">
+        <div className="rounded-2xl bg-primary/10 px-5 py-4 text-left sm:text-right">
+          <p className="text-3xl font-extrabold text-primary">
             {ratingAvg}
           </p>
           <p className="text-sm font-medium text-gray-600">
@@ -123,7 +122,7 @@ export function CourseReviewsSection({
               className="rounded-2xl border border-gray-200 bg-white p-5"
             >
               <div className="flex gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#0d22a8]/10 text-[#0d22a8]">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <UserRound className="h-5 w-5" />
                 </div>
 

@@ -25,14 +25,14 @@ export function BlogCard({ article }: BlogCardProps) {
     <article className="group overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
       <div className="relative h-52 overflow-hidden bg-gray-100">
         <img
-  src={thumbnailUrl}
-  alt={article.title}
-  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-/>
+          src={thumbnailUrl}
+          alt={article.title}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
 
         <div className="absolute inset-0 bg-linear-to-t from-black/50 via-black/10 to-transparent" />
 
-        <div className="absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-xs font-bold text-[#0d22a8] shadow-sm">
+        <div className="absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-xs font-bold text-primary shadow-sm">
           {article.source.name}
         </div>
       </div>
@@ -48,17 +48,17 @@ export function BlogCard({ article }: BlogCardProps) {
 
         <div className="mt-6 flex flex-wrap gap-3 text-sm text-gray-500">
           <span className="inline-flex items-center gap-1">
-            <CalendarDays className="h-4 w-4 text-[#F25019]" />
+            <CalendarDays className="h-4 w-4 text-secondary" />
             {formatPublishedDate(article.publishedAt)}
           </span>
 
           <span className="inline-flex items-center gap-1">
-            <Newspaper className="h-4 w-4 text-[#0d22a8]" />
+            <Newspaper className="h-4 w-4 text-primary" />
             Blog
           </span>
 
           <span className="inline-flex items-center gap-1">
-            <UserRound className="h-4 w-4 text-[#0d22a8]" />
+            <UserRound className="h-4 w-4 text-primary" />
             {article.author || "Unknown"}
           </span>
         </div>
@@ -67,7 +67,7 @@ export function BlogCard({ article }: BlogCardProps) {
           href={article.url}
           target="_blank"
           rel="noreferrer"
-          className="mt-6 inline-flex items-center text-sm font-bold text-[#0d22a8]"
+          className="mt-6 inline-flex items-center text-sm font-bold text-primary"
         >
           Baca Artikel
           <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />

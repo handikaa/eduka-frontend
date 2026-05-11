@@ -34,31 +34,31 @@ export function CourseCheckoutCard({ course }: CourseCheckoutCardProps) {
 
   return (
     <aside className="lg:sticky lg:top-24">
-      <div className="rounded-[2rem] border border-gray-200 bg-white p-6 shadow-xl">
-        <p className="text-sm font-bold uppercase tracking-wide text-[#F25019]">
+      <div className="rounded-4xl border border-gray-200 bg-white p-6 shadow-xl">
+        <p className="text-sm font-bold uppercase tracking-wide text-secondary">
           Checkout Course
         </p>
 
         <div className="mt-4">
           <p className="text-sm text-gray-500">Harga Course</p>
-          <p className="mt-1 text-3xl font-extrabold text-[#0d22a8]">
+          <p className="mt-1 text-3xl font-extrabold text-primary">
             {formatPrice(course.price)}
           </p>
         </div>
 
         <div className="mt-6 space-y-4 text-sm text-gray-600">
           <div className="flex items-center gap-3">
-            <BookOpenCheck className="h-5 w-5 text-[#0d22a8]" />
+            <BookOpenCheck className="h-5 w-5 text-primary" />
             <span>{course.lessons.length} lessons tersedia</span>
           </div>
 
           <div className="flex items-center gap-3">
-            <Users className="h-5 w-5 text-[#0d22a8]" />
+            <Users className="h-5 w-5 text-primary" />
             <span>Kuota {course.quota} student</span>
           </div>
 
           <div className="flex items-center gap-3">
-            <Star className="h-5 w-5 text-[#F25019]" />
+            <Star className="h-5 w-5 text-secondary" />
             <span>
               Rating {course.rating_avg} dari {course.rating_count} review
             </span>

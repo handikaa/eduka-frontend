@@ -18,14 +18,14 @@ export function HowItWorksSection() {
         </svg>
       </div>
 
-      <div className="relative bg-[#0d22a8]/90 px-4 py-24 text-white sm:px-6 lg:px-8">
+      <div className="relative bg-primary/90 px-4 py-24 text-white sm:px-6 lg:px-8">
         {/* Decorative Blurs */}
-        <div className="absolute left-[-80px] top-24 h-64 w-64 rounded-full bg-[#F25019]/20 blur-3xl" />
+        <div className="absolute left-[-80px] top-24 h-64 w-64 rounded-full bg-secondary/20 blur-3xl" />
         <div className="absolute bottom-20 right-[-80px] h-72 w-72 rounded-full bg-white/10 blur-3xl" />
 
         <div className="relative mx-auto max-w-7xl">
           <div className="mb-12 max-w-3xl">
-            <p className="text-sm font-bold uppercase tracking-wide text-[#F25019]">
+            <p className="text-sm font-bold uppercase tracking-wide text-secondary">
               How It Works
             </p>
 
@@ -45,7 +45,7 @@ export function HowItWorksSection() {
                 key={item.step}
                 className="group rounded-[1.5rem] border border-white/10 bg-white/10 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:shadow-2xl"
               >
-                <div className="mb-6 text-5xl font-extrabold text-[#F25019] transition-transform duration-300 group-hover:scale-105">
+                <div className="mb-6 text-5xl font-extrabold text-secondary transition-transform duration-300 group-hover:scale-105">
                   {item.step}
                 </div>
 

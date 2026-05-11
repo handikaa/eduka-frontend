@@ -3,7 +3,7 @@ import { statsData } from "@/features/home/constants/home-data";
 export function StatsSection() {
   return (
     <section className="bg-white px-4 py-12 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl rounded-[2rem] bg-[#0d22a8] px-6 py-8 shadow-xl sm:px-10">
+      <div className="mx-auto max-w-7xl rounded-[2rem] bg-primary px-6 py-8 shadow-xl sm:px-10">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {statsData.map((item) => (
             <div

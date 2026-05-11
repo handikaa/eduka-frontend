@@ -3,9 +3,9 @@ import { Mail, MapPin } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-gradient-to-br from-[#0d22a8] via-[#101f8f] to-[#06115a] text-white">
+    <footer className="relative overflow-hidden bg-linear-to-br from-primary via-primary-medium to-primary-dark text-white">
       <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
-      <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-[#F25019]/20 blur-3xl" />
+      <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-secondary/20 blur-3xl" />
 
       <div className="relative mx-auto max-w-6xl px-4 py-12">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_0.8fr_0.8fr]">
@@ -20,12 +20,12 @@ export function Footer() {
 
             <div className="mt-5 space-y-3 text-sm text-white/70">
               <div className="flex items-center gap-2">
-                <Mail className="h-4 w-4 text-[#F25019]" />
+                <Mail className="h-4 w-4 text-secondary" />
                 <span>support@eduka.com</span>
               </div>
 
               <div className="flex items-center gap-2">
-                <MapPin className="h-4 w-4 text-[#F25019]" />
+                <MapPin className="h-4 w-4 text-secondary" />
                 <span>Jakarta, Indonesia</span>
               </div>
             </div>
@@ -36,14 +36,14 @@ export function Footer() {
 
             <ul className="mt-4 space-y-3 text-sm text-white/70">
               <li>
-                <Link href="/" className="transition-colors hover:text-[#F25019]">
+                <Link href="/" className="transition-colors hover:text-secondary">
                   Home
                 </Link>
               </li>
               <li>
                 <Link
                   href="/courses"
-                  className="transition-colors hover:text-[#F25019]"
+                  className="transition-colors hover:text-secondary"
                 >
                   Courses
                 </Link>
@@ -51,7 +51,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/blog"
-                  className="transition-colors hover:text-[#F25019]"
+                  className="transition-colors hover:text-secondary"
                 >
                   Blog
                 </Link>
@@ -59,7 +59,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/about-us"
-                  className="transition-colors hover:text-[#F25019]"
+                  className="transition-colors hover:text-secondary"
                 >
                   About Us
                 </Link>
@@ -73,24 +73,24 @@ export function Footer() {
             <ul className="mt-4 space-y-3 text-sm text-white/70">
               <li>
                 <Link
-                  href="/register"
-                  className="transition-colors hover:text-[#F25019]"
+                  href="/register/student"
+                  className="transition-colors hover:text-secondary"
                 >
                   Daftar Student
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/login"
-                  className="transition-colors hover:text-[#F25019]"
+                  href="/login/student"
+                  className="transition-colors hover:text-secondary"
                 >
                   Login Student
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/dashboard"
-                  className="transition-colors hover:text-[#F25019]"
+                  href="/dashboard/student"
+                  className="transition-colors hover:text-secondary"
                 >
                   Dashboard Student
                 </Link>
@@ -98,7 +98,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/courses"
-                  className="transition-colors hover:text-[#F25019]"
+                  className="transition-colors hover:text-secondary"
                 >
                   Mulai Belajar
                 </Link>
@@ -112,32 +112,32 @@ export function Footer() {
             <ul className="mt-4 space-y-3 text-sm text-white/70">
               <li>
                 <Link
-                  href="/register?role=instructor"
-                  className="transition-colors hover:text-[#F25019]"
+                  href="/register/instructor"
+                  className="transition-colors hover:text-secondary"
                 >
                   Register Mentor
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/login"
-                  className="transition-colors hover:text-[#F25019]"
+                  href="/login/instructor"
+                  className="transition-colors hover:text-secondary"
                 >
                   Login Mentor
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/dashboard"
-                  className="transition-colors hover:text-[#F25019]"
+                  href="/dashboard/instructor"
+                  className="transition-colors hover:text-secondary"
                 >
                   Mentor Dashboard
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/dashboard"
-                  className="transition-colors hover:text-[#F25019]"
+                  href="/dashboard/instructor"
+                  className="transition-colors hover:text-secondary"
                 >
                   Buat Course
                 </Link>
@@ -155,13 +155,13 @@ export function Footer() {
           <div className="flex flex-wrap gap-4">
             <Link
               href="/about-us"
-              className="transition-colors hover:text-[#F25019]"
+              className="transition-colors hover:text-secondary"
             >
               Privacy Policy
             </Link>
             <Link
               href="/about-us"
-              className="transition-colors hover:text-[#F25019]"
+              className="transition-colors hover:text-secondary"
             >
               Terms of Service
             </Link>

@@ -9,9 +9,9 @@ export function CourseCategorySidebar() {
 
   return (
     <aside className="hidden lg:block">
-      <div className="sticky top-24 rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+      <div className="sticky top-24 rounded-3xl border border-gray-200 bg-white p-5 shadow-sm">
         <div className="mb-5 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0d22a8]/10 text-[#0d22a8]">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
             <BookOpen className="h-5 w-5" />
           </div>
 
@@ -25,11 +25,10 @@ export function CourseCategorySidebar() {
           <button
             type="button"
             onClick={() => setCategoryId(null)}
-            className={`w-full rounded-xl px-4 py-3 text-left text-sm font-semibold transition-all ${
-              filters.category_id === null
-                ? "bg-[#0d22a8] text-white shadow-md"
-                : "text-gray-600 hover:bg-gray-50 hover:text-[#0d22a8]"
-            }`}
+            className={`w-full rounded-xl px-4 py-3 text-left text-sm font-semibold transition-all ${filters.category_id === null
+              ? "bg-primary text-white shadow-md"
+              : "text-gray-600 hover:bg-gray-50 hover:text-primary"
+              }`}
           >
             All Courses
           </button>
@@ -39,11 +38,10 @@ export function CourseCategorySidebar() {
               key={category.id}
               type="button"
               onClick={() => setCategoryId(category.id)}
-              className={`w-full rounded-xl px-4 py-3 text-left text-sm font-semibold transition-all ${
-                filters.category_id === category.id
-                  ? "bg-[#0d22a8] text-white shadow-md"
-                  : "text-gray-600 hover:bg-gray-50 hover:text-[#0d22a8]"
-              }`}
+              className={`w-full rounded-xl px-4 py-3 text-left text-sm font-semibold transition-all ${filters.category_id === category.id
+                ? "bg-primary text-white shadow-md"
+                : "text-gray-600 hover:bg-gray-50 hover:text-primary"
+                }`}
             >
               {category.name}
             </button>

@@ -1,5 +1,6 @@
 "use client";
 
+import { getProxiedMediaUrl } from "@/lib/media-url";
 import { CourseLesson } from "@/features/course/types/course.type";
 
 type CoursePreviewPlayerProps = {
@@ -11,11 +12,14 @@ export function CoursePreviewPlayer({
   selectedLesson,
   thumbnailUrl,
 }: CoursePreviewPlayerProps) {
+  const safeThumbnailUrl = getProxiedMediaUrl(thumbnailUrl);
+  const safeVideoUrl = getProxiedMediaUrl(selectedLesson?.video_url);
+
   if (!selectedLesson) {
     return (
       <div className="relative flex aspect-video items-center justify-center overflow-hidden rounded-[2rem] bg-gray-900">
         <img
-          src={thumbnailUrl}
+          src={safeThumbnailUrl}
           alt="Course thumbnail"
           className="h-full w-full object-cover opacity-70"
         />
@@ -23,7 +27,7 @@ export function CoursePreviewPlayer({
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
         <div className="absolute text-center text-white">
-          <p className="text-sm font-bold uppercase tracking-wide text-[#F25019]">
+          <p className="text-sm font-bold uppercase tracking-wide text-secondary">
             Course Preview
           </p>
           <h2 className="mt-2 text-2xl font-extrabold">
@@ -38,7 +42,7 @@ export function CoursePreviewPlayer({
     return (
       <div className="flex aspect-video items-center justify-center rounded-[2rem] bg-gray-900 px-6 text-center text-white">
         <div>
-          <p className="text-sm font-bold uppercase tracking-wide text-[#F25019]">
+          <p className="text-sm font-bold uppercase tracking-wide text-secondary">
             Preview Tidak Tersedia
           </p>
           <h2 className="mt-2 text-2xl font-extrabold">
@@ -51,12 +55,8 @@ export function CoursePreviewPlayer({
 
   return (
     <div className="overflow-hidden rounded-[2rem] bg-black shadow-xl">
-      <video
-        key={selectedLesson.id}
-        controls
-        className="aspect-video w-full"
-      >
-        <source src={selectedLesson.video_url} type="video/mp4" />
+      <video key={selectedLesson.id} controls className="aspect-video w-full">
+        <source src={safeVideoUrl} type="video/mp4" />
         Browser kamu tidak mendukung pemutar video.
       </video>
     </div>

@@ -1,4 +1,4 @@
-export type UserRole = "student" | "instructor" | "admin";
+export type UserRole = "student" | "instructor";
 
 export type AuthUser = {
   id: number;
@@ -6,6 +6,8 @@ export type AuthUser = {
   email: string;
   role: UserRole;
 };
+
+export type User = AuthUser;
 
 export type LoginRequest = {
   email: string;
@@ -20,31 +22,22 @@ export type RegisterRequest = {
   role: UserRole;
 };
 
-export type AuthData = {
-  user: AuthUser;
-  token: string;
-  token_type: string;
-};
-
-export type AuthSuccessResponse = {
-  success: true;
+export type AuthResponse = {
+  success: boolean;
   message: string;
-  data: AuthData;
+  data: {
+    user: AuthUser;
+    token: string;
+    token_type: string;
+  };
 };
-
-export type AuthErrorResponse = {
-  success: false;
-  message: string;
-};
-
-export type AuthResponse = AuthSuccessResponse | AuthErrorResponse;
 
 export type AuthContextType = {
   user: AuthUser | null;
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (payload: LoginRequest) => Promise<void>;
+  login: (payload: LoginRequest) => Promise<AuthUser>;
   register: (payload: RegisterRequest) => Promise<void>;
   logout: () => void;
 };

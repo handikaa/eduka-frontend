@@ -6,20 +6,20 @@ import { Button } from "@/components/ui/button";
 export function CourseHeroSection() {
   return (
     <section className="relative overflow-hidden bg-white">
-      <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-[#0d22a8]/10 blur-3xl" />
-      <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-[#F25019]/10 blur-3xl" />
+      <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
+      <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-secondary/10 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#0d22a8]/15 bg-[#0d22a8]/5 px-4 py-2 text-sm font-bold text-[#0d22a8]">
-              <Sparkles className="h-4 w-4 text-[#F25019]" />
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/5 px-4 py-2 text-sm font-bold text-primary">
+              <Sparkles className="h-4 w-4 text-secondary" />
               <span>Explore Courses</span>
             </div>
 
             <h1 className="max-w-4xl text-4xl font-extrabold leading-tight tracking-tight text-gray-950 sm:text-5xl lg:text-6xl">
               Temukan Course Terbaik untuk{" "}
-              <span className="text-[#0d22a8]">Meningkatkan Skill</span>
+              <span className="text-primary">Meningkatkan Skill</span>
             </h1>
 
             <p className="mt-6 max-w-2xl text-base leading-7 text-gray-600 sm:text-lg">
@@ -39,7 +39,7 @@ export function CourseHeroSection() {
               <Link href="/register">
                 <Button
                   variant="outline"
-                  className="w-full rounded-full border-[#0d22a8]/20 px-7 py-3 text-base font-bold text-[#0d22a8] hover:bg-[#0d22a8] hover:text-white sm:w-auto"
+                  className="w-full rounded-full border-primary/20 px-7 py-3 text-base font-bold text-primary hover:bg-primary hover:text-white sm:w-auto"
                 >
                   Mulai Belajar
                 </Button>
@@ -48,19 +48,19 @@ export function CourseHeroSection() {
 
             <div className="mt-10 grid gap-4 sm:grid-cols-3">
               <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                <BookOpen className="mb-3 h-6 w-6 text-[#0d22a8]" />
+                <BookOpen className="mb-3 h-6 w-6 text-primary" />
                 <p className="text-2xl font-extrabold text-gray-950">120+</p>
                 <p className="mt-1 text-sm text-gray-500">Online Courses</p>
               </div>
 
               <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                <Users className="mb-3 h-6 w-6 text-[#0d22a8]" />
+                <Users className="mb-3 h-6 w-6 text-primary" />
                 <p className="text-2xl font-extrabold text-gray-950">30K+</p>
                 <p className="mt-1 text-sm text-gray-500">Active Students</p>
               </div>
 
               <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                <Search className="mb-3 h-6 w-6 text-[#0d22a8]" />
+                <Search className="mb-3 h-6 w-6 text-primary" />
                 <p className="text-2xl font-extrabold text-gray-950">6</p>
                 <p className="mt-1 text-sm text-gray-500">Categories</p>
               </div>
@@ -68,11 +68,11 @@ export function CourseHeroSection() {
           </div>
 
           <div className="relative hidden lg:block">
-            <div className="rounded-[2rem] bg-gradient-to-br from-[#0d22a8] to-[#06115a] p-6 shadow-2xl">
-              <div className="rounded-[1.5rem] bg-white p-6">
+            <div className="rounded-4xl bg-linear-to-br from-primary to-primary-dark p-6 shadow-2xl">
+              <div className="rounded-3xl bg-white p-6">
                 <div className="mb-6 flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-bold text-[#F25019]">
+                    <p className="text-sm font-bold text-secondary">
                       Recommended
                     </p>
                     <h2 className="mt-1 text-2xl font-extrabold text-gray-950">
@@ -80,16 +80,16 @@ export function CourseHeroSection() {
                     </h2>
                   </div>
 
-                  <div className="rounded-full bg-[#0d22a8]/10 px-4 py-2 text-sm font-bold text-[#0d22a8]">
+                  <div className="rounded-full bg-primary/10 px-4 py-2 text-sm font-bold text-primary">
                     Popular
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
-                    <div className="mb-3 h-3 w-32 rounded-full bg-[#0d22a8]/20" />
+                    <div className="mb-3 h-3 w-32 rounded-full bg-primary/20" />
                     <div className="h-3 w-full rounded-full bg-gray-200">
-                      <div className="h-3 w-[78%] rounded-full bg-[#F25019]" />
+                      <div className="h-3 w-[78%] rounded-full bg-secondary" />
                     </div>
                     <p className="mt-3 text-sm font-medium text-gray-600">
                       78% learning progress
@@ -97,15 +97,15 @@ export function CourseHeroSection() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="rounded-2xl bg-[#0d22a8]/5 p-4">
-                      <p className="text-2xl font-extrabold text-[#0d22a8]">
+                    <div className="rounded-2xl bg-primary/5 p-4">
+                      <p className="text-2xl font-extrabold text-primary">
                         40
                       </p>
                       <p className="text-sm text-gray-500">Lessons</p>
                     </div>
 
-                    <div className="rounded-2xl bg-[#F25019]/10 p-4">
-                      <p className="text-2xl font-extrabold text-[#F25019]">
+                    <div className="rounded-2xl bg-secondary/10 p-4">
+                      <p className="text-2xl font-extrabold text-secondary">
                         10
                       </p>
                       <p className="text-sm text-gray-500">Weeks</p>
@@ -137,7 +137,7 @@ export function CourseHeroSection() {
               <p className="text-sm font-medium text-gray-500">
                 Completion Rate
               </p>
-              <p className="text-3xl font-extrabold text-[#0d22a8]">95%</p>
+              <p className="text-3xl font-extrabold text-primary">95%</p>
             </div>
           </div>
         </div>

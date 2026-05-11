@@ -22,17 +22,17 @@ export function FeaturedCourseSection() {
   } = useCourse();
 
   useEffect(() => {
-  const userId = user?.id ?? 1;
+    const userId = user?.id ?? 1;
 
-  fetchRecommendedCourses(userId);
-}, [user?.id, fetchRecommendedCourses]);
+    fetchRecommendedCourses(userId);
+  }, [user?.id, fetchRecommendedCourses]);
 
   return (
     <section className="bg-white px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#F25019]/10 px-4 py-2 text-sm font-bold text-[#F25019]">
+            <div className="inline-flex items-center gap-2 rounded-full bg-secondary/10 px-4 py-2 text-sm font-bold text-secondary">
               <Sparkles className="h-4 w-4" />
               Recommended For You
             </div>
@@ -45,7 +45,7 @@ export function FeaturedCourseSection() {
               Rekomendasi course yang disesuaikan dengan profil dan aktivitas
               belajarmu. Data ini disimulasikan menggunakan parameter user ID.
             </p>
-          </div>        
+          </div>
         </div>
 
         {isRecommendedLoading && (

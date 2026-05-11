@@ -39,7 +39,7 @@ export default function BlogPage() {
       <section className="bg-white px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="max-w-3xl">
-            <p className="text-sm font-bold uppercase tracking-wide text-[#F25019]">
+            <p className="text-sm font-bold uppercase tracking-wide text-secondary">
               Eduka Blog
             </p>
 
@@ -125,12 +125,12 @@ export default function BlogPage() {
               </div>
 
               {totalPages > 1 && (
-            <Pagination
-  currentPage={currentPage}
-  totalPages={totalPages}
-  onPageChange={setPage}
-  showPageInput
-/>
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setPage}
+                  showPageInput
+                />
               )}
             </div>
           )}

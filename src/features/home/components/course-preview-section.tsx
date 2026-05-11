@@ -16,7 +16,7 @@ export function CoursePreviewSection() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
-            <p className="text-sm font-bold uppercase tracking-wide text-[#F25019]">
+            <p className="text-sm font-bold uppercase tracking-wide text-secondary">
               Popular Courses
             </p>
 
@@ -33,7 +33,7 @@ export function CoursePreviewSection() {
           <Link href="/courses" className="self-start md:self-auto">
             <Button
               variant="outline"
-              className="rounded-full border-[#0d22a8]/20 px-6 py-3 text-[#0d22a8]"
+              className="rounded-full border-primary/20 px-6 py-3 text-primary"
             >
               Lihat Semua
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -42,13 +42,13 @@ export function CoursePreviewSection() {
         </div>
 
         {isLoading && (
-          <div className="rounded-[1.5rem] border border-gray-200 bg-white p-8">
+          <div className="rounded-3xl border border-gray-200 bg-white p-8">
             <Loading text="Mengambil popular course..." />
           </div>
         )}
 
         {errorMessage && !isLoading && (
-          <div className="rounded-[1.5rem] border border-red-200 bg-red-50 p-8 text-center">
+          <div className="rounded-3xl border border-red-200 bg-red-50 p-8 text-center">
             <p className="text-sm font-semibold text-red-700">
               {errorMessage}
             </p>
@@ -91,7 +91,7 @@ export function CoursePreviewSection() {
                   title={course.title}
                   category={primaryCategory}
                   level={course.level}
-                  duration="Self-paced"                  
+                  duration="Self-paced"
                   lessons={course.lessons.length}
                   description={course.description}
                   thumbnailUrl={thumbnailUrl}

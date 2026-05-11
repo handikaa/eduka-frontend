@@ -8,7 +8,7 @@ export function CourseCategoryTabs() {
   return (
     <div className="lg:hidden">
       <div className="mb-4">
-        <h3 className="text-sm font-bold uppercase tracking-wide text-[#F25019]">
+        <h3 className="text-sm font-bold uppercase tracking-wide text-secondary">
           Categories
         </h3>
       </div>
@@ -17,11 +17,10 @@ export function CourseCategoryTabs() {
         <button
           type="button"
           onClick={() => setCategoryId(null)}
-          className={`shrink-0 rounded-full px-5 py-2.5 text-sm font-bold transition-all ${
-            filters.category_id === null
-              ? "bg-[#0d22a8] text-white shadow-md"
-              : "bg-white text-gray-600 ring-1 ring-gray-200"
-          }`}
+          className={`shrink-0 rounded-full px-5 py-2.5 text-sm font-bold transition-all ${filters.category_id === null
+            ? "bg-primary text-white shadow-md"
+            : "bg-white text-gray-600 ring-1 ring-gray-200"
+            }`}
         >
           All Courses
         </button>
@@ -31,11 +30,10 @@ export function CourseCategoryTabs() {
             key={category.id}
             type="button"
             onClick={() => setCategoryId(category.id)}
-            className={`shrink-0 rounded-full px-5 py-2.5 text-sm font-bold transition-all ${
-              filters.category_id === category.id
-                ? "bg-[#0d22a8] text-white shadow-md"
-                : "bg-white text-gray-600 ring-1 ring-gray-200"
-            }`}
+            className={`shrink-0 rounded-full px-5 py-2.5 text-sm font-bold transition-all ${filters.category_id === category.id
+              ? "bg-primary text-white shadow-md"
+              : "bg-white text-gray-600 ring-1 ring-gray-200"
+              }`}
           >
             {category.name}
           </button>

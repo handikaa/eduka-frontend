@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 export function CourseCTASection() {
   return (
     <section className="bg-white px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#0d22a8] via-[#101f8f] to-[#06115a] px-6 py-12 text-center shadow-2xl sm:px-10 lg:py-16">
+      <div className="mx-auto max-w-7xl overflow-hidden rounded-4xl bg-linear-to-br from-primary via-primary-medium to-primary-dark px-6 py-12 text-center shadow-2xl sm:px-10 lg:py-16">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10 text-white backdrop-blur-sm">
           <BookOpenCheck className="h-8 w-8 text-white" />
         </div>
@@ -34,9 +34,9 @@ export function CourseCTASection() {
           </Link>
 
           <Link href="#course-catalog">
-            <Button            
-            variant="outline"
-            className="text-white border border-white hover:border-[#F25019]" 
+            <Button
+              variant="outline"
+              className="text-white border border-white hover:border-secondary"
             >
               Lihat Course
             </Button>

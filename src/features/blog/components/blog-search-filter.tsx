@@ -36,7 +36,7 @@ export function BlogSearchFilter({
                 value={searchInput}
                 onChange={(event) => onSearchInputChange(event.target.value)}
                 placeholder="Cari artikel, berita, atau topik edukasi..."
-                className="h-12 w-full rounded-full border border-gray-200 bg-gray-50 pl-12 pr-4 text-sm text-gray-900 outline-none transition-colors placeholder:text-gray-400 focus:border-[#0d22a8] focus:bg-white focus:ring-2 focus:ring-[#0d22a8]/10"
+                className="h-12 w-full rounded-full border border-gray-200 bg-gray-50 pl-12 pr-4 text-sm text-gray-900 outline-none transition-colors placeholder:text-gray-400 focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10"
               />
             </div>
 
@@ -47,7 +47,7 @@ export function BlogSearchFilter({
                   event.target.value as NonNullable<GetArticlesParams["sortBy"]>
                 )
               }
-              className="h-12 rounded-full border border-gray-200 bg-gray-50 px-4 text-sm font-medium text-gray-700 outline-none transition-colors focus:border-[#0d22a8] focus:bg-white focus:ring-2 focus:ring-[#0d22a8]/10"
+              className="h-12 rounded-full border border-gray-200 bg-gray-50 px-4 text-sm font-medium text-gray-700 outline-none transition-colors focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10"
             >
               <option value="publishedAt">Published At</option>
               <option value="popularity">Popularity</option>

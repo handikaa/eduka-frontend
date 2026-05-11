@@ -7,7 +7,7 @@ export function TestimonialsSection() {
     <section className="bg-gray-50 px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="mx-auto mb-12 max-w-3xl text-center">
-          <p className="text-sm font-bold uppercase tracking-wide text-[#F25019]">
+          <p className="text-sm font-bold uppercase tracking-wide text-secondary">
             Testimonials
           </p>
           <h2 className="mt-3 text-3xl font-extrabold text-gray-950 sm:text-4xl">
@@ -23,16 +23,16 @@ export function TestimonialsSection() {
           {testimonialsData.map((item) => (
             <article
               key={item.name}
-              className="rounded-[1.5rem] border border-gray-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:shadow-2xl"
+              className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:shadow-2xl"
             >
-              <Quote className="h-8 w-8 text-[#F25019] " />
+              <Quote className="h-8 w-8 text-secondary " />
 
               <p className="mt-5 text-sm leading-7 text-gray-600">
                 “{item.message}”
               </p>
 
               <div className="mt-6 flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#0d22a8]/10 text-sm font-bold text-[#0d22a8]">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
                   {item.name.charAt(0)}
                 </div>
 

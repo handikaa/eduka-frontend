@@ -6,19 +6,19 @@ import { Button } from "@/components/ui/button";
 export function AboutHeroSection() {
   return (
     <section className="relative overflow-hidden bg-white">
-      <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-[#0d22a8]/10 blur-3xl" />
-      <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-[#F25019]/10 blur-3xl" />
+      <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
+      <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-secondary/10 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         <div className="mx-auto max-w-4xl text-center">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#0d22a8]/15 bg-[#0d22a8]/5 px-4 py-2 text-sm font-bold text-[#0d22a8]">
-            <Sparkles className="h-4 w-4 text-[#F25019]" />
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/5 px-4 py-2 text-sm font-bold text-primary">
+            <Sparkles className="h-4 w-4 text-secondary" />
             About Eduka
           </div>
 
           <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-gray-950 sm:text-5xl lg:text-6xl">
             Membangun Platform Belajar Digital yang{" "}
-            <span className="text-[#0d22a8]">Terarah dan Relevan</span>
+            <span className="text-primary">Terarah dan Relevan</span>
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-gray-600 sm:text-lg">
@@ -38,7 +38,7 @@ export function AboutHeroSection() {
             <Link href="/register">
               <Button
                 variant="outline"
-                className="w-full rounded-full px-8 py-3 text-base font-bold text-[#0d22a8] hover:bg-[#0d22a8] hover:text-white sm:w-auto"
+                className="w-full rounded-full px-8 py-3 text-base font-bold text-primary hover:bg-primary hover:text-white sm:w-auto"
               >
                 Mulai Belajar
               </Button>

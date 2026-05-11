@@ -5,11 +5,11 @@ export function MissionVisionSection() {
     <section className="bg-gray-50 px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-2">
         <article className="rounded-4xl border border-gray-200 bg-white p-8 shadow-sm">
-          <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0d22a8]/10 text-[#0d22a8]">
+          <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
             <Telescope className="h-7 w-7" />
           </div>
 
-          <p className="text-sm font-bold uppercase tracking-wide text-[#F25019]">
+          <p className="text-sm font-bold uppercase tracking-wide text-secondary">
             Our Vision
           </p>
 
@@ -24,12 +24,12 @@ export function MissionVisionSection() {
           </p>
         </article>
 
-        <article className="rounded-4xl border border-gray-200 bg-[#0d22a8] p-8 text-white shadow-xl">
-          <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-[#F25019]">
+        <article className="rounded-4xl border border-gray-200 bg-primary p-8 text-white shadow-xl">
+          <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-secondary">
             <Target className="h-7 w-7" />
           </div>
 
-          <p className="text-sm font-bold uppercase tracking-wide text-[#F25019]">
+          <p className="text-sm font-bold uppercase tracking-wide text-secondary">
             Our Mission
           </p>
 

@@ -47,7 +47,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const isAuthenticated = Boolean(token && user);
 
-  const login = async (payload: LoginRequest): Promise<void> => {
+  const login = async (payload: LoginRequest): Promise<AuthUser> => {
     setIsLoading(true);
 
     try {
@@ -65,11 +65,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       storage.setItem(STORAGE_KEYS.USER, JSON.stringify(authUser));
       storage.setItem(STORAGE_KEYS.TOKEN, authToken);
+
+      return authUser;
     } finally {
       setIsLoading(false);
     }
   };
-
   const register = async (payload: RegisterRequest): Promise<void> => {
     setIsLoading(true);
 
@@ -80,14 +81,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
         throw new Error(response.message);
       }
 
-      const authUser = response.data.user;
-      const authToken = response.data.token;
-
-      setUser(authUser);
-      setToken(authToken);
-
-      storage.setItem(STORAGE_KEYS.USER, JSON.stringify(authUser));
-      storage.setItem(STORAGE_KEYS.TOKEN, authToken);
+      /**
+       * Register tidak auto-login.
+       * Setelah register berhasil, user diarahkan ke halaman login sesuai role.
+       *
+       * Jangan set:
+       * - setUser(...)
+       * - setToken(...)
+       * - storage.setItem(STORAGE_KEYS.USER, ...)
+       * - storage.setItem(STORAGE_KEYS.TOKEN, ...)
+       */
     } finally {
       setIsLoading(false);
     }

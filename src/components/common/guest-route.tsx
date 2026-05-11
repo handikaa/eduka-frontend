@@ -12,13 +12,18 @@ type GuestRouteProps = {
 
 export function GuestRoute({ children }: GuestRouteProps) {
   const router = useRouter();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
 
   useEffect(() => {
-    if (!isLoading && isAuthenticated) {
-      router.replace("/dashboard");
+    if (!isLoading && isAuthenticated && user) {
+      if (user.role === "instructor") {
+        router.replace("/dashboard/instructor");
+        return;
+      }
+
+      router.replace("/dashboard/student");
     }
-  }, [isLoading, isAuthenticated, router]);
+  }, [isLoading, isAuthenticated, user, router]);
 
   if (isLoading) {
     return <Loading text="Memeriksa sesi login..." />;
