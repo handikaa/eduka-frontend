@@ -41,10 +41,10 @@ const registerContent = {
     ],
     switchLabel: "Ingin menjadi mentor?",
     switchHref: "/register/instructor",
-    switchText: "Daftar sebagai Instructor",
+    switchText: "Daftar sebagai Mentor",
   },
   instructor: {
-    title: "Daftar sebagai Instructor",
+    title: "Daftar sebagai Mentor",
     description:
       "Bergabung sebagai mentor Eduka untuk membuat course dan membagikan keahlianmu.",
     badge: "Instructor Account",

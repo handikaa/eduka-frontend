@@ -32,12 +32,12 @@ const loginContent = {
     registerText: "Daftar sebagai Student",
   },
   instructor: {
-    title: "Login Instructor",
+    title: "Login Mentor",
     description:
       "Masuk ke akun instructor untuk mengelola course, lesson, dan aktivitas belajar student.",
     icon: UserRoundCheck,
     registerHref: "/register/instructor",
-    registerText: "Daftar sebagai Instructor",
+    registerText: "Daftar sebagai Mentor",
   },
 };
 
